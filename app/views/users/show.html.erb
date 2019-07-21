@@ -1,5 +1,35 @@
-<h1>Show User</h1>
+<section class="jumbotron text-center">
+  <div class="container">
+    <h1 class="jumbotron-heading"><%= @user.username %></h1>
 
-<p>Username: [<%= @user.username %>]</p>
-<p>Email: [<%= @user.email %>]</p>
-<p>Password: [<%= @user.password_digest %>]</p>
+    <p class="lead text-muted">Email: <strong><%= @user.email %></strong></p>
+    <p class="lead text-muted">User since: <strong><%= @user.created_at.strftime('%Y-%m-%d') %></strong></p>
+
+    <!-- TODO: Only if current user -->
+    <%= link_to('Edit my information', edit_user_path(@user), class: 'btn btn-secondary my-2') %>
+    <%= link_to('Delete my account', user_path(@user), method: :delete, class: 'btn btn-danger my-2',
+      data: {confirm: "This will delete your entire account, including all galleries and images.\nAre you sure you want to do this?"})%>
+  </div>
+</section>
+
+<div class="album py-5 bg-light">
+  <div class="container">
+    <h2 class="jumbotron-heading">Galleries</h2>
+    <p>TODO: List all user galleries here</p>
+    <div class="row">
+
+      <!--% @user_galleries.each do |gallery| %-->
+
+        <div class="col-md-3">
+          <div class="card mb-3 shadow-sm">
+            <a href="#">
+              <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>TODO: Replace with random gallery thumbnail</title><rect width="100%" height="100%" fill="#55595c"/><text x="10%" y="15%" fill="#eceeef" dy=".3em">TODO</text></svg>
+            </a>
+          </div>
+        </div>
+
+      <!--% end %-->
+
+    </div>
+  </div>
+</div>

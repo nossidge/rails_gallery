@@ -1,10 +1,26 @@
-<h1>All Users</h1>
+<section class="jumbotron text-center">
+  <div class="container">
+    <h1 class="jumbotron-heading">Users view</h1>
+    <p class="lead text-muted">All these people are sharing their memories.<br>Why not <a href="<%= new_user_path %>">sign up</a> and join them?</p>
+  </div>
+</section>
 
-<% @users.each do |user| %>
+<div class="album py-5 bg-light">
+  <div class="container">
+    <div class="row">
 
-  <p>Username: [<%= user.username %>]</p>
-  <p>Email: [<%= user.email %>]</p>
-  <p>Password: [<%= user.password_digest %>]</p>
-  <hr>
+      <% @users.each do |user| %>
 
-<% end %>
+        <div class="col-md-3">
+          <div class="card mb-3 shadow-sm">
+            <a href="<%= user_path(user) %>">
+              <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>TODO: Replace with random gallery thumbnail</title><rect width="100%" height="100%" fill="#55595c"/><text x="10%" y="15%" fill="#eceeef" dy=".3em"><%= user.username %></text></svg>
+            </a>
+          </div>
+        </div>
+
+      <% end %>
+
+    </div>
+  </div>
+</div>
