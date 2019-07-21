@@ -50,7 +50,9 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 
-# Add RSpec gem
+# Add testing gems
 group :development, :test do
   gem 'rspec-rails', '~> 3.8'
+  gem 'factory_bot_rails'
+  gem 'capybara'
 end
