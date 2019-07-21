@@ -5,4 +5,8 @@ Rails.application.routes.draw do
   root 'users#index', as: 'home'
 
   resources :users
+
+  get 'sessions/new'
+  get 'sessions/create'
+  get 'sessions/destroy'
 end
