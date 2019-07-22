@@ -1,4 +1,10 @@
 FactoryBot.define do
+  factory :gallery do
+    name { "MyString" }
+    description { "MyText" }
+    user { nil }
+  end
+
 
   factory :user, class: 'User' do
 

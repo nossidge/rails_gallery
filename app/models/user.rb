@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  has_many :galleries
+
   before_save { self.email = email.downcase }
 
   validates :username, presence: true, uniqueness: true, length: { maximum: 25 }
