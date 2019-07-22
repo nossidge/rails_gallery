@@ -1,4 +1,8 @@
 FactoryBot.define do
+  factory :image do
+    gallery { nil }
+  end
+
   factory :gallery do
     name { "MyString" }
     description { "MyText" }
