@@ -1,12 +1,13 @@
 <div class="container" style="max-width: 800px;">
-  <%= form_for(@user, :html => {class: "form-horizontal center"}) do |f| %>
-    <% if @user.errors.any? %>
-      <% @user.errors.full_messages.uniq.each do |msg| %>
-        <div class="alert alert-danger">
-          <%= msg %>
-        </div>
-      <% end %>
+  <% if @user.errors.any? %>
+    <% @user.errors.full_messages.uniq.each do |msg| %>
+      <div class="alert alert-warning">
+        <%= msg %>
+      </div>
     <% end %>
+  <% end %>
+
+  <%= form_for(@user, :html => {class: "form-horizontal center"}) do |f| %>
     <div class="container" style="max-width: 480px;">
       <div class="form-group">
         <%= f.text_field :username, {class: 'form-control', placeholder: 'username'} %>

@@ -1,7 +1,34 @@
 <section class="jumbotron text-center">
   <div class="container">
+
+    <%# If there is an alert to display: %>
+    <% if alert %>
+      <div class="alert alert-danger" role="alert">
+        <%= alert %>
+      </div>
+    <% end %>
+
+    <% if notice %>
+      <div class="alert alert-primary" role="notice">
+        <%= notice %>
+      </div>
+    <% end %>
+
     <h1 class="jumbotron-heading">Users view</h1>
-    <p class="lead text-muted">All these people are sharing their memories.<br>Why not <a href="<%= new_user_path %>">sign up</a> and join them?</p>
+
+    <%# If User is logged in: %>
+    <% if current_user %>
+      <p class="lead text-muted">
+        Take a look at galleries by other awesome users.
+      </p>
+
+    <%# If User is not logged in: %>
+    <% else %>
+      <p class="lead text-muted">
+        All these people are sharing their memories.
+        <br>Why not <a href="<%= signup_path %>">sign up</a> and join them?
+      </p>
+    <% end %>
   </div>
 </section>
 

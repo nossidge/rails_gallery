@@ -1,2 +1,40 @@
-<h1>Sessions#new</h1>
-<p>Find me in app/views/sessions/new.html.erb</p>
+<section class="jumbotron text-center">
+  <h1 class="jumbotron-heading">Log in</h1>
+
+  <%# If User is logged in: %>
+  <% if current_user %>
+    <p class="lead text-muted">
+      You are already logged in as <strong><%= current_user.username %></strong>
+      <br>If you log in as another user you will be signed out of <strong><%= current_user.username %></strong>
+    </p>
+
+  <%# If User is not logged in: %>
+  <% else %>
+    <p class="lead text-muted">
+      Log in to your Rails Gallery account.
+      <br>Don't have one yet? <a href="<%= signup_path %>">Sign up</a> now!
+    </p>
+  <% end %>
+
+  <div class="container" style="max-width: 800px;">
+    <% if alert %>
+      <div class="alert alert-warning" role="alert">
+        <%= alert %>
+      </div>
+    <% end %>
+
+    <%= form_with(url: sessions_path, local: true, :html => {class: "form-horizontal center"}) do |f| %>
+      <div class="container" style="max-width: 480px;">
+        <div class="form-group">
+          <%= f.text_field :email, {class: 'form-control', placeholder: 'email'} %>
+        </div>
+        <div class="form-group">
+          <%= f.password_field :password, {class: 'form-control', placeholder: 'password'} %>
+        </div>
+        <div>
+          <%= f.submit('Log me in', {class: 'btn btn-primary'}) %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>

@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :owner_only, only: [:edit, :update, :destroy]
 
   # GET /users
   def index
@@ -8,6 +9,7 @@ class UsersController < ApplicationController
 
   # GET /users/1
   def show
+    @owner = owner?
   end
 
   # GET /users/new
@@ -56,5 +58,26 @@ class UsersController < ApplicationController
   # Never trust parameters from the scary internet, only allow the whitelist through
   def user_params
     params.require(:user).permit(:username, :email, :password, :password_confirmation)
+  end
+
+  # Is the logged-in user the owner of this record?
+  def owner?
+    @user == current_user
+  end
+
+  # Redirect an action if not performed by the owner
+  def owner_only
+    return if owner?
+
+    # If they are logged in (but as the wrong user)
+    if current_user
+      flash[:alert] = 'Users can only amend their own information'
+      redirect_to home_url
+
+    # If they are not logged in
+    else
+      flash[:alert] = 'To amend user details, please log in'
+      redirect_to login_url
+    end
   end
 end

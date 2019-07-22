@@ -23,24 +23,25 @@
             <strong>Rails Gallery</strong>
           </a>
 
-          <!-- TODO: if user is not logged in
-            <a class="btn btn-secondary" href="#" role="button">
-              Log in
-            </a>
-          -->
-
-          <!-- TODO: if user is logged in
-          <div class="dropdown show">
-            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              @username@
-            </a>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <a class="dropdown-item" href="#">My Profile</a>
-              <a class="dropdown-item" href="#">My Galleries</a>
-              <a class="dropdown-item" href="#">Sign Out</a>
+          <%# If User is logged in: %>
+          <% if current_user %>
+            <div class="dropdown show">
+              <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Logged in as:&nbsp;&nbsp;&nbsp;<strong><%= current_user.username %></strong>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item" href="<%= user_path(current_user) %>">My Profile</a>
+                <a class="dropdown-item" href="<%= user_path(current_user) %>">My Galleries</a>
+                <hr>
+                <%= link_to('Log Out', logout_path, class: 'dropdown-item', data: {confirm: 'Are you sure you want to log out?'})%>
+              </div>
             </div>
-          </div>
-          -->
+
+          <%# If User is not logged in: %>
+          <% else %>
+            <%= link_to('Log In', login_path, class: 'btn btn-secondary') %>
+          <% end %>
+
         </div>
       </div>
     </header>
