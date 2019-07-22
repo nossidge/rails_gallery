@@ -1,1 +1,29 @@
-edit.html.erb
+<section class="jumbotron text-center">
+  <div class="container">
+    <h1 class="jumbotron-heading"><%= link_to(@gallery.name, gallery_path(@gallery))%></h1>
+    <p class="lead text-muted"><%= @gallery.description %></p>
+
+    <%# Hide the edit form unless user wants to edit %>
+    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#editGallery" aria-expanded="false" aria-controls="editGallery">
+      Edit gallery info
+    </button>
+    <div class="collapse" id="editGallery">
+      <%= render 'form', submit_text: 'Update gallery info' %>
+    </div>
+
+  </div>
+</section>
+
+<div class="album py-5 bg-light">
+  <div class="container">
+    <h2 class="jumbotron-heading">Images</h2>
+    <%= link_to('Add image to this gallery', '#', class: 'btn btn-primary') %>
+
+    <div class="row">
+      <%# @gallery.images.each do |image| %>
+        <%#= render 'images/card', image: image %>
+      <%# end %>
+    </div>
+
+  </div>
+</div>

@@ -1,13 +1,26 @@
 class GalleriesController < ApplicationController
   before_action :set_gallery, only: [:show, :edit, :update, :destroy]
+  before_action :owner_only, only: [:edit, :update, :destroy]
+  before_action :logged_in_only, only: [:new, :create]
 
   # GET /galleries
   def index
     @galleries = Gallery.all
+
+    if @galleries.empty?
+      msg = [
+        'DEVELOPER NOTICE:',
+        'There are no galleries currently in your system.',
+        'You should add some before you introduce users to your app!',
+        '(This message will not appear after galleries have been added)',
+      ]
+      flash.now[:alert] = msg.join('<br>').html_safe
+    end
   end
 
   # GET /galleries/1
   def show
+    @owner = owner?
   end
 
   # GET /galleries/new
@@ -18,6 +31,7 @@ class GalleriesController < ApplicationController
   # POST /galleries
   def create
     @gallery = Gallery.new(gallery_params)
+    @gallery.user = current_user
 
     if @gallery.save
       redirect_to @gallery
@@ -56,5 +70,34 @@ class GalleriesController < ApplicationController
   # Never trust parameters from the scary internet, only allow the whitelist through
   def gallery_params
     params.require(:gallery).permit(:name, :description)
+  end
+
+  # Is the logged-in user the owner of this record?
+  def owner?
+    @gallery.user == current_user
+  end
+
+  # Redirect an action if not performed by the owner
+  def owner_only
+    return if owner?
+
+    # If they are logged in (but as the wrong user)
+    if current_user
+      flash[:alert] = 'Users can only amend their own galleries'
+      redirect_to home_url
+
+    # If they are not logged in
+    else
+      flash[:alert] = 'To amend gallery details, please log in'
+      redirect_to login_url
+    end
+  end
+
+  # Redirect an action if the current use is not logged in
+  def logged_in_only
+    return if current_user
+
+    flash[:alert] = 'To create a gallery, please log in'
+    redirect_to login_url
   end
 end

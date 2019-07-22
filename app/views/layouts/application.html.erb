@@ -23,6 +23,13 @@
             <strong>Rails Gallery</strong>
           </a>
 
+          <div class="navbar-text d-flex align-items-center">
+            <nav class="my-2 my-md-0 mr-md-3">
+              <a class="p-2" href="<%= users_path %>">Users</a>
+              <a class="p-2" href="<%= galleries_path %>">Galleries</a>
+            </nav>
+          </div>
+
           <%# If User is logged in: %>
           <% if current_user %>
             <div class="dropdown show">
@@ -30,8 +37,8 @@
                 Logged in as:&nbsp;&nbsp;&nbsp;<strong><%= current_user.username %></strong>
               </a>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <a class="dropdown-item" href="<%= user_path(current_user) %>">My Profile</a>
-                <a class="dropdown-item" href="<%= user_path(current_user) %>">My Galleries</a>
+                <a class="dropdown-item" href="<%= user_path(current_user) %>">View My Profile</a>
+                <a class="dropdown-item" href="<%= new_gallery_path %>">Create New Gallery</a>
                 <hr>
                 <%= link_to('Log Out', logout_path, class: 'dropdown-item', data: {confirm: 'Are you sure you want to log out?'})%>
               </div>
