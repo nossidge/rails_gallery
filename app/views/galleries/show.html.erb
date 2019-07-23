@@ -18,10 +18,18 @@
   <div class="container">
     <h2 class="jumbotron-heading">Images</h2>
 
+    <% if @gallery.images.empty? %>
+      <% if @owner %>
+        <p>There are no images in this gallery. Why not <a href="<%= edit_gallery_path(@gallery) %>">add some</a>?</p>
+      <% else %>
+        <p>There are no images in this gallery.</p>
+      <% end %>
+    <% end %>
+
     <div class="row">
-      <%# @gallery.images.each do |image| %>
-        <%#= render 'images/card', image: image %>
-      <%# end %>
+      <% @gallery.images.each do |image| %>
+        <%= render 'images/card', image: image %>
+      <% end %>
     </div>
 
   </div>

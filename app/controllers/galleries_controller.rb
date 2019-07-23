@@ -42,6 +42,9 @@ class GalleriesController < ApplicationController
 
   # GET /galleries/1/edit
   def edit
+
+    # This is the view where the images are uploaded
+    @image = Image.new
   end
 
   # PATCH/PUT /galleries/1

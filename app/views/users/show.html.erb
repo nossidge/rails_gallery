@@ -31,11 +31,10 @@
     <% end %>
 
     <div class="row">
-
       <% @user.galleries.each do |gallery| %>
         <%= render 'galleries/card', gallery: gallery %>
       <% end %>
-
     </div>
+
   </div>
 </div>

@@ -1,0 +1,19 @@
+<section class="jumbotron text-center">
+  <div class="container">
+    <h1 class="jumbotron-heading">Images</h1>
+    <p class="lead text-muted">A selection of images by our esteemed users.</p>
+  </div>
+</section>
+
+<div class="album py-5 bg-light">
+  <div class="container">
+    <h2 class="jumbotron-heading">Images</h2>
+
+      <div class="row">
+        <% @images.each do |image| %>
+          <%= render 'images/card', image: image %>
+        <% end %>
+      </div>
+
+  </div>
+</div>

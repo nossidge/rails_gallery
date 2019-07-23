@@ -1,0 +1,16 @@
+<%#
+
+Render a single image as a Bootstrap card.
+This should be a thumbnail.
+
+@param [Image] image
+  The image to be displayed
+
+%>
+<div class="col-md-3">
+  <div class="card mb-3 shadow-sm">
+    <a href="<%= image_path(image) %>">
+      <img width="100%" height="225" class="card-img-top" src="<%= url_for(image.file) %>">
+    </a>
+  </div>
+</div>

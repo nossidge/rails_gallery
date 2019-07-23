@@ -17,12 +17,27 @@
 <div class="album py-5 bg-light">
   <div class="container">
     <h2 class="jumbotron-heading">Images</h2>
-    <%= link_to('Add image to this gallery', '#', class: 'btn btn-primary') %>
+
+    <%= form_for(@gallery.images.build, :html => {class: "form-horizontal center"}) do |f| %>
+      <%= f.hidden_field(:gallery_id, :value => @gallery.id) %>
+      <div class="container form-group">
+        <div>
+          <%= f.label :file %>
+          <%= f.file_field :file %>
+        </div>
+        <div>
+          <%= f.submit('Add image', {class: 'btn btn-primary'}) %>
+        </div>
+      </div>
+    <% end %>
 
     <div class="row">
-      <%# @gallery.images.each do |image| %>
-        <%#= render 'images/card', image: image %>
-      <%# end %>
+      <% @gallery.images.each do |image| %>
+        <%# This feels a bit hacky... %>
+        <% next unless image.created_at? %>
+
+        <%= render 'images/card', image: image %>
+      <% end %>
     </div>
 
   </div>
