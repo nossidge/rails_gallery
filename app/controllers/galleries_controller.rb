@@ -6,16 +6,6 @@ class GalleriesController < ApplicationController
   # GET /galleries
   def index
     @galleries = Gallery.all
-
-    if @galleries.empty?
-      msg = [
-        'DEVELOPER NOTICE:',
-        'There are no galleries currently in your system.',
-        'You should add some before you introduce users to your app!',
-        '(This message will not appear after galleries have been added)',
-      ]
-      flash.now[:alert] = msg.join('<br>').html_safe
-    end
   end
 
   # GET /galleries/1
@@ -34,7 +24,7 @@ class GalleriesController < ApplicationController
     @gallery.user = current_user
 
     if @gallery.save
-      redirect_to @gallery
+      redirect_to edit_gallery_path(@gallery)
     else
       render 'new'
     end

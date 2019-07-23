@@ -14,19 +14,24 @@
       </div>
     <% end %>
 
-    <h1 class="jumbotron-heading">Users view</h1>
+    <h1 class="jumbotron-heading">Users</h1>
 
     <%# If User is logged in: %>
     <% if current_user %>
       <p class="lead text-muted">
-        Take a look at galleries by other awesome users.
+        View the profiles of other lovely users.
+      </p>
+      <p>
+        <%= link_to('View your profile', user_path(current_user), class: 'btn btn-lg btn-primary mt-3') %>
       </p>
 
     <%# If User is not logged in: %>
     <% else %>
       <p class="lead text-muted">
         All these people are sharing their memories.
-        <br>Why not <a href="<%= signup_path %>">sign up</a> and join them?
+      </p>
+      <p>
+        <%= link_to('Sign up to add your own', signup_path, class: 'btn btn-lg btn-primary mt-3') %>
       </p>
     <% end %>
   </div>
@@ -37,15 +42,7 @@
     <div class="row">
 
       <% @users.each do |user| %>
-
-        <div class="col-md-3">
-          <div class="card mb-3 shadow-sm">
-            <a href="<%= user_path(user) %>">
-              <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>TODO: Replace with random gallery thumbnail</title><rect width="100%" height="100%" fill="#55595c"/><text x="10%" y="15%" fill="#eceeef" dy=".3em"><%= user.username %></text></svg>
-            </a>
-          </div>
-        </div>
-
+        <%= render 'users/card', user: user %>
       <% end %>
 
     </div>

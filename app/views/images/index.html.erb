@@ -2,18 +2,34 @@
   <div class="container">
     <h1 class="jumbotron-heading">Images</h1>
     <p class="lead text-muted">A selection of images by our esteemed users.</p>
+
+    <%# If User is logged in: %>
+    <% if current_user %>
+      <p>
+        <%= link_to('Create new gallery', new_gallery_path, class: 'btn btn-lg btn-primary mt-3') %>
+      </p>
+
+    <%# If User is not logged in: %>
+    <% else %>
+      <p>
+        <%= link_to('Sign up to add your own', signup_path, class: 'btn btn-lg btn-primary mt-3') %>
+      </p>
+    <% end %>
+
   </div>
 </section>
 
 <div class="album py-5 bg-light">
   <div class="container">
-    <h2 class="jumbotron-heading">Images</h2>
+    <div class="row">
+      <% if @images.empty? %>
+        <p>There are no images yet.</p>
 
-      <div class="row">
+      <% else %>
         <% @images.each do |image| %>
           <%= render 'images/card', image: image %>
         <% end %>
-      </div>
-
+      <% end %>
+    </div>
   </div>
 </div>

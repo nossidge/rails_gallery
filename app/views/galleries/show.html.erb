@@ -7,7 +7,7 @@
     <%# Only current user can edit gallery %>
     <% if @owner %>
       <p>
-        <%= link_to('Edit this gallery', edit_gallery_path(@gallery), class: 'btn btn-secondary') %>
+        <%= link_to('Edit this gallery', edit_gallery_path(@gallery), class: 'btn btn-lg btn-primary mt-3') %>
       </p>
     <% end %>
 
@@ -16,7 +16,6 @@
 
 <div class="album py-5 bg-light">
   <div class="container">
-    <h2 class="jumbotron-heading">Images</h2>
 
     <% if @gallery.images.empty? %>
       <% if @owner %>

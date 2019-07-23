@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :owner_only, only: [:edit, :update, :destroy]
+  before_action :already_logged_in, only: [:new, :create]
 
   # GET /users
   def index
@@ -10,6 +11,10 @@ class UsersController < ApplicationController
   # GET /users/1
   def show
     @owner = owner?
+    @gallery_count = @user.galleries.count
+    @images_count = @user.galleries.inject(0) do |sum, gallery|
+      sum + gallery.images.count
+    end
   end
 
   # GET /users/new
@@ -79,5 +84,13 @@ class UsersController < ApplicationController
       flash[:alert] = 'To amend user details, please log in'
       redirect_to login_url
     end
+  end
+
+  # Redirect a create action if the user is already logged in
+  def already_logged_in
+    return unless current_user
+
+    flash[:alert] = 'You are already logged in!'
+    redirect_to user_path(current_user)
   end
 end

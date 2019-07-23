@@ -1,18 +1,29 @@
 <section class="jumbotron text-center">
   <div class="container">
-    <h1 class="jumbotron-heading"><%= @user.username %></h1>
-    <p class="lead text-muted">Email: <strong><%= @user.email %></strong></p>
-    <p class="lead text-muted">User since: <strong><%= @user.created_at.strftime('%Y-%m-%d') %></strong></p>
 
-    <%# Only current user can edit or delete account info, or create new gallery %>
+    <%# If there is an alert to display: %>
+    <% if alert %>
+      <div class="alert alert-danger" role="alert">
+        <%= alert %>
+      </div>
+    <% end %>
+
+    <h1 class="jumbotron-heading"><%= @user.username %></h1>
+
     <% if @owner %>
-      <p>
+      <p class="lead text-muted">Email: <strong><%= @user.email %></strong></p>
+      <div class="mb-3">
         <%= link_to('Edit my information', edit_user_path(@user), class: 'btn btn-secondary') %>
         <%= link_to('Delete my account', user_path(@user), method: :delete, class: 'btn btn-danger', data: {confirm: "This will delete your entire account, including all galleries and images.\nAre you sure you want to do this?"})%>
-      </p>
-      <p>
-        <%= link_to('Create new gallery', new_gallery_path, class: 'btn btn-secondary') %>
-      </p>
+      </div>
+    <% end %>
+
+    <p class="lead text-muted">User since: <strong><%= @user.created_at.strftime('%Y-%m-%d') %></strong></p>
+    <p class="lead text-muted">Galleries: <strong><%= @gallery_count %></strong></p>
+    <p class="lead text-muted">Images: <strong><%= @images_count %></strong></p>
+
+    <% if @owner %>
+      <%= link_to('Create new gallery', new_gallery_path, class: 'btn btn-lg btn-primary mt-3') %>
     <% end %>
 
   </div>

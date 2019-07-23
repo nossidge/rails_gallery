@@ -1,35 +1,46 @@
 <section class="jumbotron text-center">
   <div class="container">
-    <h1 class="jumbotron-heading"><%= link_to(@gallery.name, gallery_path(@gallery))%></h1>
+    <h1 class="jumbotron-heading"><%= @gallery.name %></h1>
     <p class="lead text-muted"><%= @gallery.description %></p>
 
     <%# Hide the edit form unless user wants to edit %>
-    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#editGallery" aria-expanded="false" aria-controls="editGallery">
-      Edit gallery info
-    </button>
-    <div class="collapse" id="editGallery">
-      <%= render 'form', submit_text: 'Update gallery info' %>
-    </div>
+    <p>
+      <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#edit-gallery" aria-expanded="false" aria-controls="edit-gallery">
+        Edit gallery info
+      </button>
+      <div class="collapse" id="edit-gallery">
+        <%= render 'form', submit_text: 'Update gallery info' %>
+      </div>
+    </p>
+    <p><%= link_to('View gallery', gallery_path(@gallery), class: 'btn btn-secondary') %></p>
+    <p><%= link_to('Delete this gallery', gallery_path(@gallery), method: :delete, class: 'btn btn-danger', data: {confirm: "This will delete the entire gallery, including all images.\nAre you sure you want to do this?"})%></p>
 
+    <hr>
+
+
+
+  <div class="container" style="max-width: 800px;">
+
+    <%= form_for(@gallery.images.build, :html => {class: "input-group mb-3"}) do |f| %>
+      <%= f.hidden_field(:gallery_id, :value => @gallery.id) %>
+      <div class="input-group-prepend">
+        <span class="input-group-text">Upload new image:</span>
+      </div>
+      <div class="custom-file">
+        <%= f.file_field :file, {class: 'custom-file-input'} %>
+        <%= f.label 'Choose file', {class: 'custom-file-label text-left'} %>
+      </div>
+      <div>
+        <%= f.submit('Add image', {class: 'btn btn-primary ml-2'}) %>
+      </div>
+    <% end %>
+
+    </div>
   </div>
 </section>
 
 <div class="album py-5 bg-light">
   <div class="container">
-    <h2 class="jumbotron-heading">Images</h2>
-
-    <%= form_for(@gallery.images.build, :html => {class: "form-horizontal center"}) do |f| %>
-      <%= f.hidden_field(:gallery_id, :value => @gallery.id) %>
-      <div class="container form-group">
-        <div>
-          <%= f.label :file %>
-          <%= f.file_field :file %>
-        </div>
-        <div>
-          <%= f.submit('Add image', {class: 'btn btn-primary'}) %>
-        </div>
-      </div>
-    <% end %>
 
     <div class="row">
       <% @gallery.images.each do |image| %>
@@ -42,3 +53,13 @@
 
   </div>
 </div>
+
+<script>
+  // TODO: Move this
+  // Update the label of the file input with the filename
+  $('#image_file').on('change', function(){
+    var fileName = $(this).val();
+    var baseNae = fileName.split(/[\\/]/).pop();
+    $(this).next('.custom-file-label').html(baseNae);
+  })
+</script>

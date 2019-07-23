@@ -6,5 +6,10 @@ class ApplicationController < ActionController::Base
     else
       @current_user = nil
     end
+
+  # In case the user has been deleted
+  rescue Module::DelegationError, ActiveRecord::RecordNotFound
+    session[:user_id] = nil
+    @current_user = nil
   end
 end

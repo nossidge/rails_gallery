@@ -1,0 +1,42 @@
+<%#
+
+Render a single user as a Bootstrap card.
+
+@param [User] user
+  The user to be displayed
+
+%>
+
+<%
+  # Try to find an image for the user.
+  # TODO: This logic should be elsewhere...
+  image = nil
+  gallery = nil
+
+  if !user.galleries.empty?
+    gallery = user.galleries.first
+  end
+
+  if gallery && !gallery.images.empty?
+    image = gallery.images.first
+  end
+%>
+
+<div class="col-md-3">
+  <div class="card mb-3 shadow-sm">
+    <a href="<%= user_path(user) %>">
+
+      <% if image %>
+        <img width="100%" height="225" class="card-img-top" src="<%= url_for(gallery.images.first.file) %>">
+
+      <%# If gallery is empty, show a default image %>
+      <% else %>
+        <svg width="100%" height="225" class="bd-placeholder-img card-img-top" xmlns="http://www.w3.org/2000/svg" viewBox="-300 -300 600 600" xml:space="preserve" style='background-color: #55595c;'>
+          <circle stroke="#AAA" stroke-width="10" r="260" fill="#FFF"/><text style="text-anchor:middle;text-align:center;fill:#6c757d;font-size:360px;" transform="scale(.14)"><tspan y="-40" x="8">NO IMAGE</tspan><tspan y="400" x="8">AVAILABLE</tspan></text>
+        </svg>
+      <% end %>
+
+      <div class="text-muted rounded border border-dark" style="background-color:#fff;padding:1px 8px 4px 8px;position:absolute;top:8px;left:8px;"><%= user.username %></div>
+    </a>
+  </div>
+</div>

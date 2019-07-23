@@ -14,20 +14,24 @@
       </div>
     <% end %>
 
-    <h1 class="jumbotron-heading">Galleries view</h1>
+    <h1 class="jumbotron-heading">Galleries</h1>
 
     <%# If User is logged in: %>
     <% if current_user %>
       <p class="lead text-muted">
         Take a look at galleries by other awesome users.
-        <br>Why not <a href="<%= new_gallery_path %>">create a new gallery</a>?
+      </p>
+      <p>
+        <%= link_to('Create new gallery', new_gallery_path, class: 'btn btn-lg btn-primary mt-3') %>
       </p>
 
     <%# If User is not logged in: %>
     <% else %>
       <p class="lead text-muted">
         All these people are sharing their memories.
-        <br>Why not <a href="<%= signup_path %>">sign up</a> and join them?
+      </p>
+      <p>
+        <%= link_to('Sign up to add your own', signup_path, class: 'btn btn-lg btn-primary mt-3') %>
       </p>
     <% end %>
   </div>
@@ -35,38 +39,10 @@
 
 <div class="album py-5 bg-light">
   <div class="container">
-    <h2 class="jumbotron-heading">Galleries</h2>
     <div class="row">
 
-
       <% if @galleries.empty? %>
-        <div class="col-md-3">
-          <div class="card mb-3 shadow-sm">
-            <a href="#">
-              <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>TODO: Replace with random gallery thumbnail</title><rect width="100%" height="100%" fill="#55595c"/>
-                <text x="10%" y="15%" fill="#eceeef" dy=".3em">Sample gallery</text>
-              </svg>
-            </a>
-            <div class="card-body">
-              <p class="card-text">Name of the gallery</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <a href="#" class="btn btn-sm btn-outline-secondary">
-                    View
-                  </a>
-                  <a href="#" class="btn btn-sm btn-outline-secondary">
-                    Edit
-                  </a>
-                  <a href="#" class="btn btn-sm btn-outline-secondary">
-                    Delete
-                  </a>
-                </div>
-                <small class="text-muted">User name</small>
-              </div>
-            </div>
-
-          </div>
-        </div>
+        <p>There are no galleries yet.</p>
 
       <% else %>
         <% @galleries.each do |gallery| %>
