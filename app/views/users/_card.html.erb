@@ -7,27 +7,14 @@ Render a single user as a Bootstrap card.
 
 %>
 
-<%
-  # Try to find an image for the user.
-  # TODO: This logic should be elsewhere...
-  image = nil
-  gallery = nil
-
-  if !user.galleries.empty?
-    gallery = user.galleries.first
-  end
-
-  if gallery && !gallery.images.empty?
-    image = gallery.images.first
-  end
-%>
+<% image_thumbnail_url = example_image_for_user(user) %>
 
 <div class="col-md-3">
   <div class="card mb-3 shadow-sm">
     <a href="<%= user_path(user) %>">
 
-      <% if image %>
-        <img width="225" height="225" class="card-img-top" src="<%= url_for_thumbnail(gallery.images.first.file) %>">
+      <% if image_thumbnail_url %>
+        <img width="225" height="225" class="card-img-top" src="<%= image_thumbnail_url %>">
 
       <%# If gallery is empty, show a default image %>
       <% else %>
