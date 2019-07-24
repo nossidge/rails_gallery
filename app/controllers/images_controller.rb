@@ -40,9 +40,10 @@ class ImagesController < ApplicationController
 
   # DELETE /images/1
   def destroy
+    gallery = @image.gallery
     @image.destroy
 
-    redirect_to request.referrer
+    redirect_to gallery_path(gallery)
   end
 
   private
