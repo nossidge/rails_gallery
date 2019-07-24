@@ -10,7 +10,14 @@ This should be a thumbnail.
 <div class="col-md-3">
   <div class="card mb-3 shadow-sm">
     <a href="<%= image_path(image) %>">
-      <img width="100%" height="225" class="card-img-top" src="<%= url_for(image.file) %>">
+
+      <%# This is apparently a Rails issue. %>
+      <%# I'll put these checks here, and if it works I'll leave it alone. %>
+      <%# https://github.com/igorkasyanchuk/active_storage_validations#known-issues %>
+      <% if image.file.attached? && image.file.attachment.blob.present? && image.file.attachment.blob.persisted? %>
+        <img width="100%" height="225" class="card-img-top" src="<%= url_for(image.file) %>">
+      <% end %>
+
     </a>
   </div>
 </div>

@@ -1,11 +1,10 @@
 class ImagesController < ApplicationController
-  before_action :set_image, only: [:show, :edit, :update, :destroy]
-  before_action :owner_only, only: [:edit, :update, :destroy]
+  before_action :set_image, only: [:show, :destroy]
+  before_action :owner_only, only: [:destroy]
   before_action :logged_in_only, only: [:new, :create]
 
   # GET /images
   def index
-    # TODO: Is this necessary?
     @images = Image.all
   end
 
@@ -28,22 +27,14 @@ class ImagesController < ApplicationController
     if @image.save
       redirect_to edit_gallery_path(@gallery)
     else
-      puts '########################################'
-      #render 'new'
-    end
-  end
 
-  # GET /images/1/edit
-  def edit
-  end
+      # TODO: This seems a bit hacky, but it works.
+      # Save the errors to the session.
+      # Remember to set 'session[:image_errors] = nil'
+      #   in the destination controller, or it will last forever...
+      session[:image_errors] = @image.errors.full_messages
 
-  # PATCH/PUT /images/1
-  def update
-    # TODO: Is this necessary?
-    if @image.update(image_params)
-      redirect_to @image
-    else
-      render 'edit'
+      redirect_to edit_gallery_path(@gallery)
     end
   end
 
@@ -51,7 +42,7 @@ class ImagesController < ApplicationController
   def destroy
     @image.destroy
 
-    redirect_to images_path
+    redirect_to request.referrer
   end
 
   private

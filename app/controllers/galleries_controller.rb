@@ -32,6 +32,9 @@ class GalleriesController < ApplicationController
 
   # GET /galleries/1/edit
   def edit
+    # If arriving from 'ImagesController#create'
+    @image_errors = session[:image_errors]
+    session[:image_errors] = nil
 
     # This is the view where the images are uploaded
     @image = Image.new

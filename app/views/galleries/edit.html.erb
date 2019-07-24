@@ -1,5 +1,7 @@
 <section class="jumbotron text-center">
   <div class="container">
+    <%= render 'form_errors' %>
+
     <h1 class="jumbotron-heading"><%= @gallery.name %></h1>
     <p class="lead text-muted"><%= @gallery.description %></p>
 
@@ -17,23 +19,28 @@
 
     <hr>
 
+    <div class="container" style="max-width: 800px;">
+      <% if @image_errors %>
+        <% @image_errors.uniq.each do |msg| %>
+          <div class="alert alert-danger">
+            <%= msg %>
+          </div>
+        <% end %>
+      <% end %>
 
-
-  <div class="container" style="max-width: 800px;">
-
-    <%= form_for(@gallery.images.build, :html => {class: "input-group mb-3"}) do |f| %>
-      <%= f.hidden_field(:gallery_id, :value => @gallery.id) %>
-      <div class="input-group-prepend">
-        <span class="input-group-text">Upload new image:</span>
-      </div>
-      <div class="custom-file">
-        <%= f.file_field :file, {class: 'custom-file-input'} %>
-        <%= f.label 'Choose file', {class: 'custom-file-label text-left'} %>
-      </div>
-      <div>
-        <%= f.submit('Add image', {class: 'btn btn-primary ml-2'}) %>
-      </div>
-    <% end %>
+      <%= form_for(@gallery.images.build, :html => {class: "input-group mb-3"}) do |f| %>
+        <%= f.hidden_field(:gallery_id, :value => @gallery.id) %>
+        <div class="input-group-prepend">
+          <span class="input-group-text">Upload new image:</span>
+        </div>
+        <div class="custom-file">
+          <%= f.file_field(:file, {accept: 'image/*', class: 'custom-file-input'}) %>
+          <%= f.label 'Choose file', {class: 'custom-file-label text-left'} %>
+        </div>
+        <div>
+          <%= f.submit('Add image', {class: 'btn btn-primary ml-2'}) %>
+        </div>
+      <% end %>
 
     </div>
   </div>
@@ -59,7 +66,7 @@
   // Update the label of the file input with the filename
   $('#image_file').on('change', function(){
     var fileName = $(this).val();
-    var baseNae = fileName.split(/[\\/]/).pop();
-    $(this).next('.custom-file-label').html(baseNae);
+    var baseName = fileName.split(/[\\/]/).pop();
+    $(this).next('.custom-file-label').html(baseName);
   })
 </script>

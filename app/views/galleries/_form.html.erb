@@ -1,12 +1,4 @@
 <div class="container" style="max-width: 800px;">
-  <% if @gallery.errors.any? %>
-    <% @gallery.errors.full_messages.uniq.each do |msg| %>
-      <div class="alert alert-warning">
-        <%= msg %>
-      </div>
-    <% end %>
-  <% end %>
-
   <%= form_for(@gallery, :html => {class: "form-horizontal center"}) do |f| %>
     <div class="container" style="max-width: 480px;">
       <div class="form-group">

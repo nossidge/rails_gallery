@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
   resources :users
   resources :galleries
-  resources :images
+  resources :images, except: [:edit, :update]
 
   resources :sessions, only: [:new, :create, :destroy]
   get 'signup', to: 'users#new', as: 'signup'
