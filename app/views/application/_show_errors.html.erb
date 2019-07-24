@@ -1,0 +1,13 @@
+<%#
+
+Show each form error in a separate 'alert' <div>
+
+@param [Array] error_messages
+  This will most likely be derived from {ActiveModel::Errors#full_messages}
+
+%>
+<% error_messages.uniq.each do |msg| %>
+  <div class="alert alert-danger">
+    <%= msg %>
+  </div>
+<% end %>

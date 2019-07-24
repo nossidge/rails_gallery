@@ -1,6 +1,6 @@
 <section class="jumbotron text-center">
   <div class="container">
-    <%= render 'form_errors' %>
+    <%= render 'application/show_errors', error_messages: @gallery.errors.full_messages %>
 
     <h1 class="jumbotron-heading"><%= @gallery.name %></h1>
     <p class="lead text-muted"><%= @gallery.description %></p>
@@ -20,13 +20,7 @@
     <hr>
 
     <div class="container" style="max-width: 800px;">
-      <% if @image_errors %>
-        <% @image_errors.uniq.each do |msg| %>
-          <div class="alert alert-danger">
-            <%= msg %>
-          </div>
-        <% end %>
-      <% end %>
+      <%= render 'application/show_errors', error_messages: @image_errors %>
 
       <%= form_for(@gallery.images.build, :html => {class: "input-group mb-3"}) do |f| %>
         <%= f.hidden_field(:gallery_id, :value => @gallery.id) %>

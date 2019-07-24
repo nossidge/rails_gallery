@@ -1,15 +1,18 @@
 <section class="jumbotron text-center">
-  <%= render 'form_errors' %>
-  <h1 class="jumbotron-heading">Create a gallery!</h1>
-  <p class="lead text-muted">
-    A gallery is a great way for you to share photos with your friends.
-    <br>
-    Just give it a name and a description, and then start adding photos!
-    <br>
-    <br>
-    The name should be something like "2018 trip to Paris", or "Sally's birthday".
-    <br>
-    For the description, maybe describe your holiday, or what Sally got up to that night.
-  </p>
-  <%= render 'form', submit_text: 'Create new gallery' %>
+  <div class="container">
+    <%= render 'application/show_errors', error_messages: @gallery.errors.full_messages %>
+
+    <h1 class="jumbotron-heading">Create a gallery!</h1>
+    <p class="lead text-muted">
+      A gallery is a great way for you to share photos with your friends.
+      <br>
+      Just give it a name and a description, and then start adding photos!
+      <br>
+      <br>
+      The name should be something like "2018 trip to Paris", or "Sally's birthday".
+      <br>
+      For the description, maybe describe your holiday, or what Sally got up to that night.
+    </p>
+    <%= render 'form', submit_text: 'Create new gallery' %>
+  </div class="container">
 </section>

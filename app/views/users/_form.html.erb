@@ -1,11 +1,5 @@
 <div class="container" style="max-width: 800px;">
-  <% if @user.errors.any? %>
-    <% @user.errors.full_messages.uniq.each do |msg| %>
-      <div class="alert alert-warning">
-        <%= msg %>
-      </div>
-    <% end %>
-  <% end %>
+  <%= render 'application/show_errors', error_messages: @user.errors.full_messages %>
 
   <%= form_for(@user, :html => {class: "form-horizontal center"}) do |f| %>
     <div class="container" style="max-width: 480px;">
