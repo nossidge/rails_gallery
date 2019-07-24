@@ -10,15 +10,7 @@ Editing routes are only visible if the 'current_user' owns the gallery.
 <div class="col-md-3">
   <div class="card mb-3 shadow-sm">
     <a href="<%= gallery_path(gallery) %>">
-
-      <%# If gallery is empty, show a default image %>
-      <% if gallery.images.empty? %>
-        <%= render 'images/default_svg' %>
-
-      <% else %>
-        <img width="225" height="225" class="card-img-top" src="<%= url_for_thumbnail(gallery.images.first.file) %>">
-      <% end %>
-
+      <%= display_thumbnail(gallery.images.first) %>
     </a>
     <div class="card-body">
       <p class="card-text"><%= gallery.name %></p>

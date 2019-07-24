@@ -7,20 +7,10 @@ Render a single user as a Bootstrap card.
 
 %>
 
-<% image_thumbnail_url = example_image_for_user(user) %>
-
 <div class="col-md-3">
   <div class="card mb-3 shadow-sm">
     <a href="<%= user_path(user) %>">
-
-      <% if image_thumbnail_url %>
-        <img width="225" height="225" class="card-img-top" src="<%= image_thumbnail_url %>">
-
-      <%# If gallery is empty, show a default image %>
-      <% else %>
-        <%= render 'images/default_svg' %>
-      <% end %>
-
+      <%= display_thumbnail example_image_for_user(user) %>
       <div class="text-muted rounded border border-dark" style="background-color:#fff;padding:1px 8px 4px 8px;position:absolute;top:8px;left:8px;"><%= user.username %></div>
     </a>
   </div>
