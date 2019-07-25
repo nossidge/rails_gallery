@@ -29,5 +29,10 @@ module RailsGallery
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    # Handle HTTP execptions ourselves.
+    # Using code from:
+    # https://anoobbava.github.io/blog/2018/03/22/create-custom-error-pages-in-rails/
+    config.exceptions_app = self.routes
   end
 end
