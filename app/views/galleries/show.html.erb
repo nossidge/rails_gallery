@@ -3,6 +3,9 @@
     <h1 class="jumbotron-heading"><%= @gallery.name %></h1>
     <p class="lead text-muted"><%= @gallery.description %></p>
     <p class="lead text-muted">by <%= link_to(@gallery.user.username, user_path(@gallery.user))%></p>
+    <p class="lead text-muted">
+      Gallery contains <strong><%= @gallery.images.count %></strong> <%= 'image'.pluralize(@images_count) %>
+    </p>
 
     <%# Only current user can edit gallery %>
     <% if @owner %>
