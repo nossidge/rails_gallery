@@ -6,8 +6,10 @@ Show each form error in a separate 'alert' <div>
   This will most likely be derived from {ActiveModel::Errors#full_messages}
 
 %>
-<% error_messages.uniq.each do |msg| %>
-  <div class="alert alert-danger">
-    <%= msg %>
-  </div>
+<% if error_messages %>
+  <% error_messages.uniq.each do |msg| %>
+    <div class="alert alert-danger">
+      <%= msg %>
+    </div>
+  <% end %>
 <% end %>

@@ -2,17 +2,27 @@
   <div class="container">
     <%= render 'application/show_errors', error_messages: @gallery.errors.full_messages %>
 
-    <h1 class="jumbotron-heading"><%= @gallery.name %></h1>
-    <p class="lead text-muted"><%= @gallery.description %></p>
+    <%# TODO: This is fairly hideous %>
+    <%# How are we supposed to capture the initial saved field values? %>
+    <%# And why can't I read '@gallery.changes' from the controller? %>
+    <h1 class="jumbotron-heading">
+      <%= @gallery.changes['name']&.first || @gallery.name %>
+    </h1>
+    <p class="lead text-muted">
+      <%= @gallery.changes['description']&.first || @gallery.description %>
+    </p>
 
     <%# Hide the edit form unless user wants to edit %>
     <p>
       <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#edit-gallery" aria-expanded="false" aria-controls="edit-gallery">
         Edit gallery info
       </button>
-      <div class="collapse" id="edit-gallery">
-        <%= render 'form', submit_text: 'Update gallery info' %>
+
+      <%# Use the flash hash to uncollapse on page load %>
+      <div class="collapse <%= flash[:collapse_toggle] %>" id="edit-gallery">
+        <%= render 'galleries/form', submit_text: 'Update gallery info' %>
       </div>
+
     </p>
     <p><%= link_to('View gallery', gallery_path(@gallery), class: 'btn btn-secondary') %></p>
     <p><%= link_to('Delete this gallery', gallery_path(@gallery), method: :delete, class: 'btn btn-danger', data: {confirm: "This will delete the entire gallery, including all images.\nAre you sure you want to do this?"})%></p>

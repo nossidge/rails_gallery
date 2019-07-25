@@ -43,8 +43,10 @@ class GalleriesController < ApplicationController
   # PATCH/PUT /galleries/1
   def update
     if @gallery.update(gallery_params)
-      redirect_to @gallery
+      flash[:collapse_toggle] = nil
+      redirect_to edit_gallery_path(@gallery)
     else
+      flash[:collapse_toggle] = 'show'
       render 'edit'
     end
   end
