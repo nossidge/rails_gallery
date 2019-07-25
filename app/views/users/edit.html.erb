@@ -1,4 +1,5 @@
 <section class="jumbotron text-center">
   <h1 class="jumbotron-heading">Update infomation</h1>
-  <%= render 'form', submit_text: 'Update my details' %>
+  <%= render 'users/form', submit_text: 'Update my details' %>
+  <%= link_to('Cancel', user_path(@user), class: 'btn btn-secondary mt-3') %>
 </section>

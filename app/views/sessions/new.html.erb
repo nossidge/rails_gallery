@@ -18,7 +18,7 @@
 
   <div class="container" style="max-width: 800px;">
     <% if alert %>
-      <div class="alert alert-warning" role="alert">
+      <div class="alert alert-danger" role="alert">
         <%= alert %>
       </div>
     <% end %>
@@ -32,9 +32,11 @@
           <%= f.password_field :password, {class: 'form-control', placeholder: 'password'} %>
         </div>
         <div>
-          <%= f.submit('Log me in', {class: 'btn btn-primary'}) %>
+          <%= f.submit('Log me in', {class: 'btn btn-lg btn-primary'}) %>
         </div>
       </div>
     <% end %>
+
+    <%= link_to('Cancel', home_path, class: 'btn btn-secondary mt-3') %>
   </div>
 </section>

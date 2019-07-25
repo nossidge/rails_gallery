@@ -4,7 +4,7 @@
     <p class="lead text-muted">image added <strong><%= @image.created_at.strftime('%Y-%m-%d') %></strong></p>
     <p class="lead text-muted">by <%= link_to(@image.gallery.user.username, user_path(@image.gallery.user))%></p>
 
-    <%= link_to('Back to gallery', gallery_path(@image.gallery), class: 'btn btn-lg btn-secondary mt-3') %>
+    <%= link_to('View gallery', gallery_path(@image.gallery), class: 'btn btn-lg btn-secondary mt-3') %>
 
     <% if @owner %>
       <p class="py-3">
