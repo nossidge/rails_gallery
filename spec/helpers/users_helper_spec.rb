@@ -1,15 +1,44 @@
 require 'rails_helper'
 
-# Specs in this file have access to a helper object that includes
-# the UsersHelper. For example:
-#
-# describe UsersHelper do
-#   describe "string concat" do
-#     it "concats two strings with spaces" do
-#       expect(helper.concat_strings("this","that")).to eq("this that")
-#     end
-#   end
-# end
 RSpec.describe UsersHelper, type: :helper do
-  pending "add some examples to (or delete) #{__FILE__}"
+
+  describe '#example_image_for_user' do
+
+    it 'returns nil when given a User with no galleries' do
+      user = create(:user)
+      expect(helper.example_image_for_user(user)).to be nil
+    end
+
+    it 'returns nil when given a User with no images' do
+      gallery = create(:gallery)
+      user = gallery.user
+      expect(helper.example_image_for_user(user)).to be nil
+    end
+
+    it 'returns the only image when given a User with one image' do
+      image = create(:image)
+      gallery = image.gallery
+      user = gallery.user
+      expect(helper.example_image_for_user(user)).to eq image
+    end
+
+    it 'returns the first image when given a User with many images' do
+      image = create(:image)
+      gallery = image.gallery
+      3.times { create(:image, gallery: gallery) }
+      user = gallery.user
+      expect(helper.example_image_for_user(user)).to eq image
+    end
+
+    it 'returns the first image in the first gallery when given a User with many images in many galleries' do
+      user = create(:user)
+      gallery = create(:gallery, user: user)
+      3.times { create(:gallery, user: user) }
+      image = create(:image, gallery: gallery)
+      user.galleries.each do |gallery|
+        3.times { create(:image, gallery: gallery) }
+      end
+      expect(helper.example_image_for_user(user)).to eq image
+    end
+  end
 end
