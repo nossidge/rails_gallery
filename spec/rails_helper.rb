@@ -65,6 +65,13 @@ RSpec.configure do |config|
 
   config.include Capybara::DSL
 
-  Capybara.javascript_driver = :rack_test
-  Capybara.current_driver = Capybara.javascript_driver
+  config.include FactoryBot::Syntax::Methods
+end
+
+# https://github.com/thoughtbot/shoulda-matchers
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
 end

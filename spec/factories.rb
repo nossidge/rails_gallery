@@ -1,27 +1,28 @@
 FactoryBot.define do
-  factory :image do
-    gallery { nil }
-  end
 
-  factory :gallery do
-    name { "MyString" }
-    description { "MyText" }
-    user { nil }
-  end
-
-
-  factory :user, class: 'User' do
-
+  factory :user do
     sequence :username do |n|
       "John Testerton no. #{n}"
     end
-
     sequence :email do |n|
       "person_#{n}@example.com"
     end
+    password do
+      'foobarbaz'
+    end
+    password_confirmation do
+      'foobarbaz'
+    end
+  end
 
-    password              { 'foobarbaz' }
-    password_confirmation { 'foobarbaz' }
+  factory :gallery do
+    user
+    name { 'Example gallery text' }
+    description { 'Example description' }
+  end
+
+  factory :image do
+    gallery
   end
 
 end
