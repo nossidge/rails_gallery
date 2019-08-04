@@ -59,3 +59,8 @@ group :development, :test do
   gem 'capybara'
   gem 'shoulda-matchers'
 end
+
+# Code coverage is nice to have
+group :test do
+  gem 'simplecov', require: false
+end
