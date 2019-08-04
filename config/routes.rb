@@ -15,6 +15,6 @@ Rails.application.routes.draw do
   get 'sessions', to: 'sessions#new'
 
   get '404', to: 'errors#not_found'
-  get '422', to: 'errors#unacceptable'
-  get '500', to: 'errors#internal_error'
+  get '422', to: 'errors#unprocessable_entity'
+  get '500', to: 'errors#internal_server_error'
 end
