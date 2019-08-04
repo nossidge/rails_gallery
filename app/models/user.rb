@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  has_many :galleries
+  has_many :galleries, dependent: :destroy
 
   before_save { self.email = email.downcase }
 
