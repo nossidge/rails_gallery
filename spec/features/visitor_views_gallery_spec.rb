@@ -12,7 +12,7 @@ RSpec.describe 'features' do
       given_they_visit_the_galleries_index
 
       they_should_be_able_to_view_galleries
-      they_should_not_be_able_to_see_edit_gallery_links
+      they_should_not_see_edit_gallery_links
       they_should_see_a_signup_link
     end
 
@@ -21,8 +21,8 @@ RSpec.describe 'features' do
       given_the_user_is_not_logged_in
       given_they_visit_a_specific_gallery
 
-      they_should_not_be_able_to_see_the_edit_gallery_link
-      they_should_be_able_to_view_the_images_for_that_gallery
+      they_should_not_see_the_edit_gallery_link
+      they_should_see_the_images_for_that_gallery
       they_should_see_the_name_of_the_gallery
       they_should_see_the_description_of_the_gallery
       they_should_see_the_username_of_the_gallery_owner
@@ -53,7 +53,7 @@ RSpec.describe 'features' do
 
     def given_there_is_data_in_the_system
       @gallery = create(:gallery)
-      2.times { create(:image, gallery: @gallery) }
+      create_list(:image, 2, gallery: @gallery)
       expect(Gallery.all.empty?).to be false
       expect(Image.all.empty?).to be false
     end
@@ -69,13 +69,13 @@ RSpec.describe 'features' do
 
     def they_should_be_able_to_view_galleries
       Gallery.all.each do |gallery|
-        expect(page).to have_link('', href: gallery_path(gallery.id))
+        expect(page).to have_link('', href: gallery_path(gallery))
       end
     end
 
-    def they_should_not_be_able_to_see_edit_gallery_links
+    def they_should_not_see_edit_gallery_links
       Gallery.all.each do |gallery|
-        expect(page).to_not have_link('', href: edit_gallery_path(gallery.id))
+        expect(page).not_to have_link('', href: edit_gallery_path(gallery))
       end
     end
 
@@ -86,18 +86,18 @@ RSpec.describe 'features' do
     ############################################################################
 
     def given_they_visit_a_specific_gallery
-      visit gallery_path(@gallery.id)
+      visit gallery_path(@gallery)
     end
 
-    def they_should_not_be_able_to_see_the_edit_gallery_link
-      expect(page).to_not have_content('Edit this gallery')
-      expect(page).to_not have_link('', href: edit_gallery_path(@gallery.id))
+    def they_should_not_see_the_edit_gallery_link
+      expect(page).not_to have_content('Edit this gallery')
+      expect(page).not_to have_link('', href: edit_gallery_path(@gallery))
     end
 
-    def they_should_be_able_to_view_the_images_for_that_gallery
+    def they_should_see_the_images_for_that_gallery
       expect(@gallery.images.empty?).to be false
       @gallery.images.each do |image|
-        expect(page).to have_link('', href: image_path(image.id))
+        expect(page).to have_link('', href: image_path(image))
       end
     end
 
@@ -114,13 +114,13 @@ RSpec.describe 'features' do
     end
 
     def they_should_see_a_link_to_the_gallery_owner
-      expect(page).to have_link('', href: user_path(@gallery.user.id))
+      expect(page).to have_link('', href: user_path(@gallery.user))
     end
 
     ############################################################################
 
     def given_they_request_a_gallery_edit_path
-      visit edit_gallery_path(@gallery.id)
+      visit edit_gallery_path(@gallery)
     end
 
     def they_should_be_redirected_to_login_page
@@ -138,7 +138,7 @@ RSpec.describe 'features' do
     end
 
     def when_they_request_a_gallery_delete_path
-      page.driver.submit :delete, gallery_path(@gallery.id), {}
+      page.driver.submit :delete, gallery_path(@gallery), {}
     end
 
     def the_gallery_count_should_not_have_changed

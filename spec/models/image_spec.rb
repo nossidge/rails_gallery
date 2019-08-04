@@ -1,35 +1,13 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require './spec/support/image_helpers'
+
+RSpec.configure do |config|
+  config.include ImageHelpers
+end
 
 RSpec.describe Image, type: :model do
-
-  ##
-  # Create a temporary file and fill it with dummy data
-  #
-  # @param [Integer] bytes
-  # @return [Tempfile]
-  #
-  def create_dummy_file(bytes)
-    Tempfile.new('image.png').tap do |filepath|
-      content = 'a' * bytes
-      File.write(filepath, content)
-    end
-  end
-
-  ##
-  # Create a dummy file, upload the file, and create an Image object
-  # attaching the dummy file
-  #
-  # @param [Integer] bytes
-  #
-  def create_image(bytes, mime_type: 'image/png')
-    filepath = create_dummy_file(bytes)
-    file = fixture_file_upload(filepath, mime_type)
-    create(:image, file: file)
-  end
-
-  ##############################################################################
 
   describe Image, '#file' do
 
@@ -63,7 +41,7 @@ RSpec.describe Image, type: :model do
     end
 
     it 'is smaller than 2MB' do
-      MEGABYTES = 1_048_576
+      stub_const('MEGABYTES', 1_048_576)
 
       expect do
         create_image(2 * MEGABYTES - 1)

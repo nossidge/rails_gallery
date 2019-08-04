@@ -6,7 +6,6 @@ FactoryBot::SyntaxRunner.class_eval do
   include ActionDispatch::TestProcess
 end
 
-
 FactoryBot.define do
 
   factory :user do
@@ -16,18 +15,22 @@ FactoryBot.define do
     sequence :email do |n|
       "person_#{n}@example.com"
     end
-    password do
-      'foobarbaz'
+    sequence :password do |n|
+      "foobarbaz_#{n}"
     end
-    password_confirmation do
-      'foobarbaz'
+    sequence :password_confirmation do |n|
+      "foobarbaz_#{n}"
     end
   end
 
   factory :gallery do
     user
-    name { 'Example gallery text' }
-    description { 'Example description' }
+    sequence :name do |n|
+      "Gallery name no. #{n}"
+    end
+    sequence :description do |n|
+      "Gallery description no. #{n}"
+    end
   end
 
   factory :image do

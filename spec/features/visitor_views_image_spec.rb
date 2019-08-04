@@ -20,11 +20,11 @@ RSpec.describe 'features' do
       given_the_user_is_not_logged_in
       given_they_visit_a_specific_image
 
-      they_should_see_a_link_back_to_the_gallery
-      they_should_not_be_able_to_see_delete_image_link
       they_should_see_the_name_of_the_gallery
       they_should_see_the_username_of_the_gallery_owner
       they_should_see_a_link_to_the_gallery_owner
+      they_should_see_a_link_back_to_the_gallery
+      they_should_not_see_delete_image_link
     end
 
     scenario 'visitor requests image delete' do
@@ -42,7 +42,7 @@ RSpec.describe 'features' do
 
     def given_there_is_data_in_the_system
       @gallery = create(:gallery)
-      2.times { create(:image, gallery: @gallery) }
+      create_list(:image, 2, gallery: @gallery)
       @image = Image.first
       expect(Gallery.all.empty?).to be false
       expect(Image.all.empty?).to be false
@@ -59,7 +59,7 @@ RSpec.describe 'features' do
 
     def they_should_be_able_to_view_images
       Image.all.each do |image|
-        expect(page).to have_link('', href: image_path(image.id))
+        expect(page).to have_link('', href: image_path(image))
       end
     end
 
@@ -70,15 +70,7 @@ RSpec.describe 'features' do
     ############################################################################
 
     def given_they_visit_a_specific_image
-      visit image_path(@image.id)
-    end
-
-    def they_should_see_a_link_back_to_the_gallery
-      expect(page).to have_link('', href: gallery_path(@gallery.id))
-    end
-
-    def they_should_not_be_able_to_see_delete_image_link
-      expect(page).to_not have_content('Delete image')
+      visit image_path(@image)
     end
 
     def they_should_see_the_name_of_the_gallery
@@ -90,7 +82,15 @@ RSpec.describe 'features' do
     end
 
     def they_should_see_a_link_to_the_gallery_owner
-      expect(page).to have_link('', href: user_path(@gallery.user.id))
+      expect(page).to have_link('', href: user_path(@gallery.user))
+    end
+
+    def they_should_see_a_link_back_to_the_gallery
+      expect(page).to have_link('', href: gallery_path(@gallery))
+    end
+
+    def they_should_not_see_delete_image_link
+      expect(page).not_to have_content('Delete image')
     end
 
     ############################################################################
@@ -100,7 +100,7 @@ RSpec.describe 'features' do
     end
 
     def when_they_request_an_image_delete_path
-      page.driver.submit :delete, image_path(@image.id), {}
+      page.driver.submit :delete, image_path(@image), {}
     end
 
     def they_should_be_redirected_to_login_page

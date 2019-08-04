@@ -33,7 +33,7 @@ RSpec.describe 'features' do
     def given_there_is_data_in_the_system
       @user = create(:user)
       @gallery = create(:gallery, user: @user)
-      2.times.map { create(:image, gallery: @gallery) }
+      create_list(:image, 2, gallery: @gallery)
       @image = @gallery.images.sample
     end
 
@@ -56,7 +56,7 @@ RSpec.describe 'features' do
     ############################################################################
 
     def given_they_visit_an_image_show_path_for_an_image_they_own
-      visit image_path(@image.id)
+      visit image_path(@image)
     end
 
     def store_the_image_count
@@ -68,12 +68,12 @@ RSpec.describe 'features' do
     end
 
     def they_should_be_redirected_to_images_index
-      expect(page).to have_current_path(gallery_path(@gallery.id))
+      expect(page).to have_current_path(gallery_path(@gallery))
     end
 
     def they_should_not_be_able_to_view_old_image_page
       expect do
-        visit image_path(@image.id)
+        visit image_path(@image)
       end.to raise_error(ActiveRecord::RecordNotFound)
     end
 

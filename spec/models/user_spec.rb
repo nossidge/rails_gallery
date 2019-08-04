@@ -40,7 +40,7 @@ RSpec.describe User, type: :model do
     it 'is present' do
       null_values.each do |value|
         user = build(:user, username: value)
-        expect(user).to_not be_valid
+        expect(user).not_to be_valid
       end
     end
 
@@ -49,7 +49,7 @@ RSpec.describe User, type: :model do
         user1 = create(:user, username: value)
         user2 = build(:user, username: value)
         expect(user1).to be_valid
-        expect(user2).to_not be_valid
+        expect(user2).not_to be_valid
       end
     end
 
@@ -64,7 +64,7 @@ RSpec.describe User, type: :model do
 
       value = 'c' * 26
       user = build(:user, username: value)
-      expect(user).to_not be_valid
+      expect(user).not_to be_valid
     end
   end
 
@@ -88,7 +88,7 @@ RSpec.describe User, type: :model do
     it 'is present' do
       null_values.each do |value|
         user = build(:user, email: value)
-        expect(user).to_not be_valid
+        expect(user).not_to be_valid
       end
     end
 
@@ -100,9 +100,9 @@ RSpec.describe User, type: :model do
         1the_user@foo.bar.org
         1first.last@foo.jp
       ].each do |value|
-        user1 = create(:user, email: value)
+        create(:user, email: value)
         expect do
-          user2 = create(:user, email: value)
+          create(:user, email: value)
         end.to raise_error(ActiveRecord::RecordInvalid)
       end
       %w[
@@ -110,9 +110,9 @@ RSpec.describe User, type: :model do
         2THE_USER@foo.bar.org
         2FIRST.LAST@FOO.JP
       ].each do |value|
-        user1 = create(:user, email: value)
+        create(:user, email: value)
         expect do
-          user2 = create(:user, email: value)
+          create(:user, email: value)
         end.to raise_error(ActiveRecord::RecordNotUnique)
       end
     end
@@ -128,7 +128,7 @@ RSpec.describe User, type: :model do
 
       value = '@' * 256
       user = build(:user, email: value)
-      expect(user).to_not be_valid
+      expect(user).not_to be_valid
     end
 
     it 'contains an at symbol' do
@@ -138,14 +138,14 @@ RSpec.describe User, type: :model do
         example.userkfoo.
       ].each do |value|
         user = build(:user, email: value)
-        expect(user).to_not be_valid
+        expect(user).not_to be_valid
       end
     end
 
     it 'downcases the email on save' do
       value = 'user@EXAMPLE.com'
       user = create(:user, email: value)
-      expect(user.email).to_not eq value
+      expect(user.email).not_to eq value
       expect(user.email).to eq value.downcase
     end
   end
@@ -173,7 +173,7 @@ RSpec.describe User, type: :model do
     it 'is present' do
       null_values.each do |value|
         user = build(:user, password: value, password_confirmation: value)
-        expect(user).to_not be_valid
+        expect(user).not_to be_valid
       end
     end
 
@@ -188,7 +188,7 @@ RSpec.describe User, type: :model do
 
       value = 'c' * 5
       user = build(:user, password: value, password_confirmation: value)
-      expect(user).to_not be_valid
+      expect(user).not_to be_valid
     end
 
     it 'requires a matching password confirmation' do
@@ -199,7 +199,7 @@ RSpec.describe User, type: :model do
         %w[foo bar]
       ].each do |value, conf|
         user = build(:user, password: value, password_confirmation: conf)
-        expect(user).to_not be_valid
+        expect(user).not_to be_valid
       end
     end
   end

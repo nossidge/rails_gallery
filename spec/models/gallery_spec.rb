@@ -40,7 +40,7 @@ RSpec.describe Gallery, type: :model do
     it 'is present' do
       null_values.each do |value|
         gallery = build(:gallery, name: value)
-        expect(gallery).to_not be_valid
+        expect(gallery).not_to be_valid
       end
     end
 
@@ -55,7 +55,7 @@ RSpec.describe Gallery, type: :model do
 
       value = 'c' * 51
       gallery = build(:gallery, name: value)
-      expect(gallery).to_not be_valid
+      expect(gallery).not_to be_valid
     end
 
     it 'is no shorter than 3 characters' do
@@ -69,7 +69,7 @@ RSpec.describe Gallery, type: :model do
 
       value = 'c' * 2
       gallery = build(:gallery, name: value)
-      expect(gallery).to_not be_valid
+      expect(gallery).not_to be_valid
     end
   end
 
@@ -104,7 +104,7 @@ RSpec.describe Gallery, type: :model do
 
       value = 'c' * 256
       gallery = build(:gallery, description: value)
-      expect(gallery).to_not be_valid
+      expect(gallery).not_to be_valid
     end
   end
 end

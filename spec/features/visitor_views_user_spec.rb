@@ -10,6 +10,7 @@ RSpec.describe 'features' do
       given_there_is_data_in_the_system
       given_the_user_is_not_logged_in
       given_they_visit_the_users_index
+
       they_should_be_able_to_view_users
       they_should_see_a_signup_link
     end
@@ -18,17 +19,19 @@ RSpec.describe 'features' do
       given_there_is_data_in_the_system
       given_the_user_is_not_logged_in
       given_they_visit_a_specific_user
-      they_should_be_able_to_view_username
-      they_should_be_able_to_view_the_galleries_for_that_user
-      they_should_not_be_able_to_view_user_email
-      they_should_not_be_able_to_see_edit_user_links
-      they_should_not_be_able_to_see_edit_gallery_links
+
+      they_should_see_the_username
+      they_should_see_the_galleries_for_that_user
+      they_should_not_see_user_email
+      they_should_not_see_edit_user_links
+      they_should_not_see_edit_gallery_links
     end
 
     scenario 'visitor requests user edit' do
       given_there_is_data_in_the_system
       given_the_user_is_not_logged_in
       given_they_request_a_user_edit_path
+
       they_should_be_redirected_to_login_page
       they_should_be_shown_an_error_message
     end
@@ -64,7 +67,7 @@ RSpec.describe 'features' do
 
     def they_should_be_able_to_view_users
       User.all.each do |user|
-        expect(page).to have_link('', href: user_path(user.id))
+        expect(page).to have_link('', href: user_path(user))
       end
     end
 
@@ -75,43 +78,45 @@ RSpec.describe 'features' do
     ############################################################################
 
     def given_they_visit_a_specific_user
-      visit user_path(@user.id)
+      visit user_path(@user)
     end
 
-    def they_should_be_able_to_view_username
+    def they_should_see_the_username
       expect(page).to have_content(@user.username)
     end
 
-    def they_should_be_able_to_view_the_galleries_for_that_user
+    def they_should_see_the_galleries_for_that_user
       expect(@user.galleries.empty?).to be false
       @user.galleries.each do |gallery|
-        expect(page).to have_link('', href: gallery_path(gallery.id))
+        expect(page).to have_link('', href: gallery_path(gallery))
       end
     end
 
-    def they_should_not_be_able_to_view_user_email
-      expect(page).to_not have_content(@user.email)
+    def they_should_not_see_user_email
+      expect(page).not_to have_content(@user.email)
     end
 
-    def they_should_not_be_able_to_see_edit_user_links
-      expect(page).to_not have_content('Edit my information')
-      expect(page).to_not have_content('Delete my account')
+    def they_should_not_see_edit_user_links
+      expect(page).not_to have_content('Edit my information')
+      expect(page).not_to have_content('Delete my account')
     end
 
-    def they_should_not_be_able_to_see_edit_gallery_links
+    def they_should_not_see_edit_gallery_links
       @user.galleries.each do |gallery|
-        expect(page).to_not have_link('', href: edit_gallery_path(gallery.id))
+        expect(page).not_to have_link('', href: edit_gallery_path(gallery))
       end
     end
 
     ############################################################################
 
     def given_they_request_a_user_edit_path
-      visit edit_user_path(@user.id)
+      visit edit_user_path(@user)
     end
+
     def they_should_be_redirected_to_login_page
       expect(page).to have_current_path(login_path)
     end
+
     def they_should_be_shown_an_error_message
       expect(page).to have_content('To amend user details, please log in')
     end
@@ -123,7 +128,7 @@ RSpec.describe 'features' do
     end
 
     def when_they_request_a_user_delete_path
-      page.driver.submit :delete, user_path(@user.id), {}
+      page.driver.submit :delete, user_path(@user), {}
     end
 
     def and_the_user_count_should_not_have_changed

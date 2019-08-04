@@ -41,7 +41,7 @@ RSpec.describe 'features' do
     end
 
     feature 'member submits form' do
-      before(:each) do
+      before do
         given_there_is_data_in_the_system
         given_the_user_is_logged_in
         given_they_visit_a_gallery_edit_path_for_a_gallery_they_own
@@ -55,33 +55,33 @@ RSpec.describe 'features' do
       scenario 'with all fields missing' do
         when_the_user_submits_the_form(name: nil, description: nil)
         confirm_fields_not_updated
-        confirm_error_shown("Name can't be blank")
-        confirm_error_shown('Name is too short (minimum is 3 characters)')
+        confirm_error("Name can't be blank")
+        confirm_error('Name is too short (minimum is 3 characters)')
       end
 
       scenario 'with missing name' do
         when_the_user_submits_the_form(name: nil)
         confirm_fields_not_updated
-        confirm_error_shown("Name can't be blank")
-        confirm_error_shown('Name is too short (minimum is 3 characters)')
+        confirm_error("Name can't be blank")
+        confirm_error('Name is too short (minimum is 3 characters)')
       end
 
       scenario 'with name too short' do
         when_the_user_submits_the_form(name: 'aa')
         confirm_fields_not_updated
-        confirm_error_shown('Name is too short (minimum is 3 characters)')
+        confirm_error('Name is too short (minimum is 3 characters)')
       end
 
       scenario 'with name too long' do
         when_the_user_submits_the_form(name: 'a' * 51)
         confirm_fields_not_updated
-        confirm_error_shown('Name is too long (maximum is 50 characters)')
+        confirm_error('Name is too long (maximum is 50 characters)')
       end
 
       scenario 'with description too long' do
         when_the_user_submits_the_form(description: 'a' * 256)
         confirm_fields_not_updated
-        confirm_error_shown('Description is too long (maximum is 255 characters)')
+        confirm_error('Description is too long (maximum is 255 characters)')
       end
     end
 
@@ -103,7 +103,7 @@ RSpec.describe 'features' do
     end
 
     def given_they_visit_a_gallery_edit_path_for_a_gallery_they_own
-      visit edit_gallery_path(@gallery.id)
+      visit edit_gallery_path(@gallery)
     end
 
     # The default here is that the informaton is valid.
@@ -127,11 +127,11 @@ RSpec.describe 'features' do
     # Make sure the saved data still matches the '@original_user' info
     def confirm_fields_not_updated
       gallery = Gallery.find(@gallery.id)
-      expect(gallery.name).to_not eq 'new name'
-      expect(gallery.description).to_not eq 'new description'
+      expect(gallery.name).not_to eq 'new name'
+      expect(gallery.description).not_to eq 'new description'
     end
 
-    def confirm_error_shown(error_message)
+    def confirm_error(error_message)
       expect(page).to have_content(error_message)
     end
 
@@ -146,7 +146,7 @@ RSpec.describe 'features' do
     end
 
     def they_should_see_a_link_back_to_the_gallery
-      expect(page).to have_link('View gallery', href: gallery_path(@gallery.id))
+      expect(page).to have_link('View gallery', href: gallery_path(@gallery))
     end
 
     def they_should_see_a_link_to_delete_the_gallery
@@ -192,7 +192,7 @@ RSpec.describe 'features' do
 
     def they_should_not_be_able_to_view_old_gallery_page
       expect do
-        visit gallery_path(@gallery.id)
+        visit gallery_path(@gallery)
       end.to raise_error(ActiveRecord::RecordNotFound)
     end
 

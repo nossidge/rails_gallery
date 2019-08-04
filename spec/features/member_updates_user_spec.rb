@@ -44,7 +44,7 @@ RSpec.describe 'features' do
     end
 
     feature 'member submits form' do
-      before(:each) do
+      before do
         given_there_is_data_in_the_system
         given_the_user_is_logged_in
         given_they_visit_their_own_user_edit_path
@@ -57,66 +57,72 @@ RSpec.describe 'features' do
 
       scenario 'with all fields missing' do
         when_the_user_submits_the_form(
-          username: nil,
-          email: nil,
-          password: nil,
+          username:      nil,
+          email:         nil,
+          password:      nil,
           password_conf: nil
         )
         confirm_fields_not_updated(:username, :email, :password)
-        confirm_error_shown("Username can't be blank")
-        confirm_error_shown("Email can't be blank")
-        confirm_error_shown('Email is invalid')
-        confirm_error_shown("Password can't be blank")
-        confirm_error_shown('Password is too short (minimum is 6 characters)')
-        confirm_error_shown("Password confirmation doesn't match Password")
+        confirm_error("Username can't be blank")
+        confirm_error("Email can't be blank")
+        confirm_error('Email is invalid')
+        confirm_error("Password can't be blank")
+        confirm_error('Password is too short (minimum is 6 characters)')
+        confirm_error("Password confirmation doesn't match Password")
       end
 
       scenario 'with missing username' do
         when_the_user_submits_the_form(username: nil)
         confirm_fields_not_updated(:username, :email, :password)
-        confirm_error_shown("Username can't be blank")
+        confirm_error("Username can't be blank")
       end
 
       scenario 'with duplicate username' do
         when_the_user_submits_the_form(username: @different_user.username)
         confirm_fields_not_updated(:username, :email, :password)
-        confirm_error_shown('Username has already been taken')
+        confirm_error('Username has already been taken')
       end
 
       scenario 'with missing email' do
         when_the_user_submits_the_form(email: nil)
         confirm_fields_not_updated(:username, :email, :password)
-        confirm_error_shown("Email can't be blank")
+        confirm_error("Email can't be blank")
       end
 
       scenario 'with invalid email' do
         when_the_user_submits_the_form(email: 'no_at_symbol')
         confirm_fields_not_updated(:username, :email, :password)
-        confirm_error_shown('Email is invalid')
+        confirm_error('Email is invalid')
       end
 
       scenario 'with duplicate email' do
         when_the_user_submits_the_form(email: @different_user.email)
         confirm_fields_not_updated(:username, :email, :password)
-        confirm_error_shown('Email has already been taken')
+        confirm_error('Email has already been taken')
       end
 
       scenario 'with missing password' do
         when_the_user_submits_the_form(password: nil, password_conf: nil)
         confirm_fields_not_updated(:username, :email, :password)
-        confirm_error_shown("Password can't be blank")
+        confirm_error("Password can't be blank")
       end
 
       scenario 'with invalid password' do
-        when_the_user_submits_the_form(password: '2_sml', password_conf: '2_sml')
+        when_the_user_submits_the_form(
+          password:      '2_sml',
+          password_conf: '2_sml'
+        )
         confirm_fields_not_updated(:username, :email, :password)
-        confirm_error_shown('Password is too short (minimum is 6 characters)')
+        confirm_error('Password is too short (minimum is 6 characters)')
       end
 
       scenario 'with invalid password confirmation' do
-        when_the_user_submits_the_form(password: 'p4ssw0rd', password_conf: 'password')
+        when_the_user_submits_the_form(
+          password:      'p4ssw0rd',
+          password_conf: 'password'
+        )
         confirm_fields_not_updated(:username, :email, :password)
-        confirm_error_shown("Password confirmation doesn't match Password")
+        confirm_error("Password confirmation doesn't match Password")
       end
     end
 
@@ -138,7 +144,7 @@ RSpec.describe 'features' do
     end
 
     def given_they_visit_their_own_user_edit_path
-      visit edit_user_path(@original_user.id)
+      visit edit_user_path(@original_user)
     end
 
     # The default here is that the informaton is valid.
@@ -166,20 +172,22 @@ RSpec.describe 'features' do
       compare_fields(@original_user, fields)
     end
 
+    # NOTE:
     # It might seem overkill to do it this way (with the 'fields' parameter)
     # but I'm going to update the way this form is displayed, so individual
     # fields can be updated separately. So this will be useful then.
     def compare_fields(user_from_factory, fields)
       user = User.find(@original_user.id)
       if fields.delete(:password)
-        expect(user.reload.authenticate(user_from_factory.password)).to_not be false
+        password_auth = user.reload.authenticate(user_from_factory.password)
+        expect(password_auth).not_to be false
       end
       fields.each do |field|
         expect(user[field]).to eq user_from_factory[field]
       end
     end
 
-    def confirm_error_shown(error_message)
+    def confirm_error(error_message)
       expect(page).to have_content(error_message)
     end
 
@@ -190,7 +198,7 @@ RSpec.describe 'features' do
     end
 
     def they_should_see_a_cancel_button
-      expect(page).to have_xpath("//a[@href='#{user_path(@original_user.id)}']")
+      expect(page).to have_xpath("//a[@href='#{user_path(@original_user)}']")
     end
 
     def the_username_field_should_be_filled_in
@@ -220,13 +228,13 @@ RSpec.describe 'features' do
     end
 
     def they_should_be_redirected_to_user_page
-      expect(page).to have_current_path(user_path(@original_user.id))
+      expect(page).to have_current_path(user_path(@original_user))
     end
 
     ############################################################################
 
     def given_they_visit_their_own_user_path
-      visit user_path(@original_user.id)
+      visit user_path(@original_user)
     end
 
     def store_the_user_count
@@ -251,7 +259,7 @@ RSpec.describe 'features' do
 
     def they_should_not_be_able_to_view_old_user_page
       expect do
-        visit user_path(@original_user.id)
+        visit user_path(@original_user)
       end.to raise_error(ActiveRecord::RecordNotFound)
     end
 

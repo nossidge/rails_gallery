@@ -3,8 +3,8 @@
 require 'rails_helper'
 require './spec/support/image_helpers'
 
-RSpec.configure do |c|
-  c.include ImageHelpers
+RSpec.configure do |config|
+  config.include ImageHelpers
 end
 
 RSpec.describe 'features' do
@@ -27,7 +27,7 @@ RSpec.describe 'features' do
     def given_there_is_data_in_the_system
       @user = create(:user)
       @gallery = create(:gallery, user: @user)
-      2.times.map { create(:image, gallery: @gallery) }
+      create_list(:image, 2, gallery: @gallery)
       @image = @gallery.images.sample
     end
 
@@ -39,7 +39,7 @@ RSpec.describe 'features' do
     end
 
     def given_they_visit_a_gallery_edit_path_for_a_gallery_they_own
-      visit edit_gallery_path(@gallery.id)
+      visit edit_gallery_path(@gallery)
     end
 
     def store_the_image_count_for_the_gallery
@@ -53,16 +53,16 @@ RSpec.describe 'features' do
     # but it's weird that I can't automate it.
     # I think I'm going to have to leave this one for now.
     def when_they_select_an_image_to_upload
-      #attach_file('image[file]', test_image_png)
-      #find('form input[type="file"]').set(test_image_png)
+      # attach_file('image[file]', test_image_png)
+      # find('form input[type="file"]').set(test_image_png)
     end
 
     def and_they_click_the_upload_button
-      #click_button 'Add image'
+      # click_button 'Add image'
     end
 
     def the_image_count_should_be_one_higher
-      #expect(@gallery.images.count).to eq @initial_image_count + 1
+      # expect(@gallery.images.count).to eq @initial_image_count + 1
     end
   end
 end

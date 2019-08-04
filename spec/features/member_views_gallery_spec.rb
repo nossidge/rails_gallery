@@ -75,10 +75,10 @@ RSpec.describe 'features' do
     def given_there_is_data_in_the_system
       users = 2.times.map { create(:user) }
       users.each do |user|
-        2.times.map { create(:gallery, user: user) }
+        create_list(:gallery, 2, user: user)
       end
       Gallery.all.each do |gallery|
-        2.times.map { create(:image, gallery: gallery) }
+        create_list(:image, 2, gallery: gallery)
       end
       expect(User.all.empty?).to be false
       expect(Gallery.all.empty?).to be false
@@ -105,7 +105,7 @@ RSpec.describe 'features' do
 
     def they_should_see_galleries
       Gallery.all.each do |gallery|
-        expect(page).to have_link('', href: gallery_path(gallery.id))
+        expect(page).to have_link('', href: gallery_path(gallery))
       end
     end
 
@@ -116,19 +116,20 @@ RSpec.describe 'features' do
     ############################################################################
 
     def given_they_visit_a_gallery_path_for_another_user
-      visit gallery_path(@other_gallery.id)
+      visit gallery_path(@other_gallery)
       @current_gallery = @other_gallery
     end
 
     def they_should_not_see_the_edit_gallery_link
-      expect(page).to_not have_content('Edit this gallery')
-      expect(page).to_not have_link('', href: edit_gallery_path(@current_gallery.id))
+      expect(page).not_to have_content('Edit this gallery')
+      link = edit_gallery_path(@current_gallery)
+      expect(page).not_to have_link('', href: link)
     end
 
     def they_should_see_the_images_for_that_gallery
       expect(@current_gallery.images.empty?).to be false
       @current_gallery.images.each do |image|
-        expect(page).to have_link('', href: image_path(image.id))
+        expect(page).to have_link('', href: image_path(image))
       end
     end
 
@@ -145,13 +146,13 @@ RSpec.describe 'features' do
     end
 
     def they_should_see_a_link_to_the_gallery_owner
-      expect(page).to have_link('', href: user_path(@current_gallery.user.id))
+      expect(page).to have_link('', href: user_path(@current_gallery.user))
     end
 
     ############################################################################
 
     def given_they_request_a_gallery_edit_path_for_another_user
-      visit edit_gallery_path(@other_gallery.id)
+      visit edit_gallery_path(@other_gallery)
     end
 
     def they_should_be_redirected_to_home_page
@@ -169,7 +170,7 @@ RSpec.describe 'features' do
     end
 
     def when_they_request_a_gallery_delete_path_for_another_user
-      page.driver.submit :delete, gallery_path(@other_gallery.id), {}
+      page.driver.submit :delete, gallery_path(@other_gallery), {}
     end
 
     def and_the_gallery_count_should_not_have_changed
@@ -179,13 +180,13 @@ RSpec.describe 'features' do
     ############################################################################
 
     def given_they_visit_the_path_to_a_gallery_they_own
-      visit gallery_path(@gallery.id)
+      visit gallery_path(@gallery)
       @current_gallery = @gallery
     end
 
     def they_should_see_the_edit_gallery_link
       expect(page).to have_content('Edit this gallery')
-      expect(page).to have_link('', href: edit_gallery_path(@current_gallery.id))
+      expect(page).to have_link('', href: edit_gallery_path(@current_gallery))
     end
 
     ############################################################################
@@ -195,7 +196,7 @@ RSpec.describe 'features' do
     end
 
     def they_should_be_directed_to_edit_gallery_page
-      expect(page).to have_current_path(edit_gallery_path(@current_gallery.id))
+      expect(page).to have_current_path(edit_gallery_path(@current_gallery))
     end
   end
 end

@@ -83,10 +83,10 @@ RSpec.describe 'features' do
     def given_there_is_data_in_the_system
       users = 2.times.map { create(:user) }
       users.each do |user|
-        2.times.map { create(:gallery, user: user) }
+        create_list(:gallery, 2, user: user)
       end
       Gallery.all.each do |gallery|
-        2.times.map { create(:image, gallery: gallery) }
+        create_list(:image, 2, gallery: gallery)
       end
       expect(User.all.empty?).to be false
       expect(Gallery.all.empty?).to be false
@@ -116,7 +116,7 @@ RSpec.describe 'features' do
 
     def they_should_see_images
       Image.all.each do |image|
-        expect(page).to have_link('', href: image_path(image.id))
+        expect(page).to have_link('', href: image_path(image))
       end
     end
 
@@ -127,7 +127,7 @@ RSpec.describe 'features' do
     ############################################################################
 
     def given_they_visit_an_image_path_for_another_user
-      visit image_path(@other_image.id)
+      visit image_path(@other_image)
       @current_image = @other_image
     end
 
@@ -141,15 +141,17 @@ RSpec.describe 'features' do
     end
 
     def they_should_see_a_link_to_the_image_owner
-      expect(page).to have_link('', href: user_path(@current_image.gallery.user.id))
+      link = user_path(@current_image.gallery.user)
+      expect(page).to have_link('', href: link)
     end
 
     def they_should_see_a_link_to_the_parent_gallery
-        expect(page).to have_link('', href: gallery_path(@current_image.gallery.id))
+      link = gallery_path(@current_image.gallery)
+      expect(page).to have_link('', href: link)
     end
 
     def they_should_not_see_a_link_to_delete_image
-      expect(page).to_not have_link('Delete image')
+      expect(page).not_to have_link('Delete image')
     end
 
     ############################################################################
@@ -161,8 +163,7 @@ RSpec.describe 'features' do
       end.to raise_error(ActionController::RoutingError)
     end
 
-    def they_should_be_redirected_to_404_page
-    end
+    def they_should_be_redirected_to_404_page; end
 
     ############################################################################
 
@@ -171,7 +172,7 @@ RSpec.describe 'features' do
     end
 
     def when_they_request_an_image_delete_path_for_another_user
-      page.driver.submit :delete, image_path(@other_image.id), {}
+      page.driver.submit :delete, image_path(@other_image), {}
     end
 
     def they_should_be_redirected_to_home_page
@@ -189,7 +190,7 @@ RSpec.describe 'features' do
     ############################################################################
 
     def given_they_visit_the_path_to_an_image_they_own
-      visit image_path(@image.id)
+      visit image_path(@image)
       @current_image = @image
     end
 
@@ -215,19 +216,20 @@ RSpec.describe 'features' do
 
     # Don't actually click the link.
     # We are not using a javascript engine, so we can't see the alert.
-    def when_they_click_the_image_delete_path
-    end
+    def when_they_click_the_image_delete_path; end
 
     # We will instead check that the HTML exists that would show the alert.
     def they_should_be_shown_a_warning_dialog
       elem = page.find('a', text: 'Delete image')
       expect(elem['data-method']).to eq 'delete'
-      expect(elem['data-confirm']).to eq "This will delete the image from the server.\nAre you sure you want to do this?"
+      expect(elem['data-confirm']).to eq <<~MSG.strip
+        This will delete the image from the server.
+        Are you sure you want to do this?
+      MSG
     end
 
     # See the above comments.
     # As long as 'data-confirm' exists, it should be valid.
-    def they_should_be_able_to_cancel_the_operation
-    end
+    def they_should_be_able_to_cancel_the_operation; end
   end
 end

@@ -17,7 +17,7 @@ RSpec.describe SessionsController, type: :controller do
       expect(session[:user_id]).to eq nil
 
       user = create(:user)
-      get :create, params: {email: user.email, password: user.password}
+      get :create, params: { email: user.email, password: user.password }
 
       expect(response).to have_http_status(:redirect)
       expect(response).to redirect_to(home_url)
@@ -34,17 +34,17 @@ RSpec.describe SessionsController, type: :controller do
       expect(response).to have_http_status(:success)
       expect(flash[:alert]).to eq 'Email or password is invalid'
 
-      get :create, params: {email: email}
+      get :create, params: { email: email }
       expect(response).to have_http_status(:success)
       expect(flash[:alert]).to eq 'Email or password is invalid'
 
-      get :create, params: {password: password}
+      get :create, params: { password: password }
       expect(response).to have_http_status(:success)
       expect(flash[:alert]).to eq 'Email or password is invalid'
 
       email = 'non@existant.com'
       password = 'foobarbaz'
-      get :create, params: {email: email, password: password}
+      get :create, params: { email: email, password: password }
       expect(response).to have_http_status(:success)
       expect(flash[:alert]).to eq 'Email or password is invalid'
     end
