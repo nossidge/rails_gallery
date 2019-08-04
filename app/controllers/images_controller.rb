@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class ImagesController < ApplicationController
-  before_action :set_image, only: [:show, :destroy]
-  before_action :owner_only, only: [:destroy]
-  before_action :logged_in_only, only: [:new, :create]
+  before_action :set_image, only: %i[show destroy]
+  before_action :owner_only, only: %i[destroy]
+  before_action :logged_in_only, only: %i[new create]
 
   # GET /images
   def index
@@ -24,18 +26,15 @@ class ImagesController < ApplicationController
     @gallery = Gallery.find(params[:image][:gallery_id])
     @image = @gallery.images.create(image_params)
 
-    if @image.save
-      redirect_to edit_gallery_path(@gallery)
-    else
-
+    unless @image.save
       # TODO: This seems a bit hacky, but it works.
       # Save the errors to the session.
       # Remember to set 'session[:image_errors] = nil'
       #   in the destination controller, or it will last forever...
       session[:image_errors] = @image.errors.full_messages
-
-      redirect_to edit_gallery_path(@gallery)
     end
+
+    redirect_to edit_gallery_path(@gallery)
   end
 
   # DELETE /images/1
@@ -53,7 +52,7 @@ class ImagesController < ApplicationController
     @image = Image.find(params[:id])
   end
 
-  # Never trust parameters from the scary internet, only allow the whitelist through
+  # Allow only parameters from the whitelist
   def image_params
     params.require(:image).permit(:file)
   end

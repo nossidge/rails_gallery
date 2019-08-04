@@ -1,0 +1,89 @@
+require:
+  - rubocop-performance
+  - rubocop-rails
+  - rubocop-rspec
+
+AllCops:
+  TargetRubyVersion: 2.5
+  Include:
+    - '**/*.rb'
+  Exclude:
+    - doc/**/*
+    - docs/**/*
+    - examples/**/*
+    - rcov/**/*
+    - Changelog
+    - Guardfile
+    - Gemfile
+    - LICENSE
+    - Rakefile
+    - '**/*.bat'
+    - '**/*.gem'
+    - '**/*.md'
+    - '**/*.yml'
+    - .gitignore/**/*
+    - .yardoc/**/*
+    - .yardopts/**/*
+    - bin/*
+    - db/**/*
+    - config/**/*
+    - vendor/**/*
+    - spec/rails_helper.rb
+    - spec/spec_helper.rb
+    - lib/work*.rb
+    - ~/*
+
+Layout/AlignHash:
+  EnforcedColonStyle: table
+
+Style/AsciiComments:
+  Enabled: false
+Layout/EmptyLinesAroundBlockBody:
+  Enabled: false
+Layout/EmptyLinesAroundClassBody:
+  Enabled: false
+Layout/EmptyLinesAroundExceptionHandlingKeywords:
+  Enabled: false
+
+# I still need to determine how I want to document my Rails apps.
+# So let's turn this off for now.
+Style/Documentation:
+  Enabled: false
+
+# All cops below are specific to testing.
+RSpec/DescribeClass:
+  Enabled: false
+RSpec/ExampleLength:
+  Enabled: false
+RSpec/InstanceVariable:
+  Enabled: false
+RSpec/MultipleExpectations:
+  Enabled: false
+Capybara/FeatureMethods:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: true
+  Max: 20
+  Exclude:
+    - spec/*
+    - spec/**/*
+Metrics/MethodLength:
+  Enabled: true
+  Exclude:
+    - spec/*
+    - spec/**/*
+Performance/TimesMap:
+  Enabled: true
+  Exclude:
+    - spec/*
+    - spec/**/*
+
+Metrics/BlockLength:
+  ExcludedMethods:
+    - define
+    - describe
+    - context
+    - shared_examples
+    - feature
+    - scenario

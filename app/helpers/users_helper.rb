@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UsersHelper
   ##
   # Get an example image from any gallery by the user.

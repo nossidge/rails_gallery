@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_action :owner_only, only: [:edit, :update, :destroy]
-  before_action :already_logged_in, only: [:new, :create]
+  before_action :set_user, only: %i[show edit update destroy]
+  before_action :owner_only, only: %i[edit update destroy]
+  before_action :already_logged_in, only: %i[new create]
 
   # GET /users
   def index
@@ -35,8 +37,7 @@ class UsersController < ApplicationController
   end
 
   # GET /users/1/edit
-  def edit
-  end
+  def edit; end
 
   # PATCH/PUT /users/1
   def update
@@ -61,9 +62,10 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
-  # Never trust parameters from the scary internet, only allow the whitelist through
+  # Allow only parameters from the whitelist
   def user_params
-    params.require(:user).permit(:username, :email, :password, :password_confirmation)
+    whitelist = %i[username email password password_confirmation]
+    params.require(:user).permit(*whitelist)
   end
 
   # Is the logged-in user the owner of this record?

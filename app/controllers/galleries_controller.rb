@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class GalleriesController < ApplicationController
-  before_action :set_gallery, only: [:show, :edit, :update, :destroy]
-  before_action :owner_only, only: [:edit, :update, :destroy]
-  before_action :logged_in_only, only: [:new, :create]
+  before_action :set_gallery, only: %i[show edit update destroy]
+  before_action :owner_only, only: %i[edit update destroy]
+  before_action :logged_in_only, only: %i[new create]
 
   # GET /galleries
   def index
@@ -65,7 +67,7 @@ class GalleriesController < ApplicationController
     @gallery = Gallery.find(params[:id])
   end
 
-  # Never trust parameters from the scary internet, only allow the whitelist through
+  # Allow only parameters from the whitelist
   def gallery_params
     params.require(:gallery).permit(:name, :description)
   end

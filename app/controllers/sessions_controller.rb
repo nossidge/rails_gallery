@@ -1,14 +1,15 @@
+# frozen_string_literal: true
+
 # Code cribbed from:
 #   https://medium.com/@wintermeyer/authentication-from-scratch-with-rails-5-2-92d8676f6836
 class SessionsController < ApplicationController
-  def new
-  end
+  def new; end
 
   def create
     return session_invalid unless session_params_present(params)
 
     email = params[:email].downcase
-    user = User.find_by_email(email)
+    user = User.find_by(email: email)
 
     return session_invalid unless user&.authenticate(params[:password])
 
@@ -24,8 +25,8 @@ class SessionsController < ApplicationController
   private
 
   def session_params_present(params)
-    [:email, :password].all? do |param|
-      params.has_key?(param)
+    %i[email password].all? do |param|
+      params.key?(param)
     end
   end
 

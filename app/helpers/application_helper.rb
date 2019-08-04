@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ApplicationHelper
   ##
   # Get the URL for a thumbnail variant of an {ActiveStorage} image.
