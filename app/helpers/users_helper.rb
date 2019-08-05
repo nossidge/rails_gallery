@@ -30,7 +30,7 @@ module UsersHelper
       sum + gallery.images.size
     end
     gallery_count = user.galleries.size
-    <<~MSG.strip.html_safe
+    sanitize(<<~MSG.strip, tags: ['strong'])
       User has
       <strong>#{images_count}</strong> #{'image'.pluralize(images_count)}
       in

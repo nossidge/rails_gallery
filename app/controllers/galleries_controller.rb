@@ -2,7 +2,7 @@
 
 class GalleriesController < ApplicationController
   before_action :set_gallery, only: %i[show edit update destroy]
-  before_action :owner_only, only: %i[edit update destroy]
+  before_action :authorised_only, only: %i[edit update destroy]
   before_action :logged_in_only, only: %i[new create]
 
   # GET /galleries
@@ -11,9 +11,7 @@ class GalleriesController < ApplicationController
   end
 
   # GET /galleries/1
-  def show
-    @owner = owner?
-  end
+  def show; end
 
   # GET /galleries/new
   def new
@@ -62,7 +60,7 @@ class GalleriesController < ApplicationController
 
   private
 
-  # Use callbacks to share common setup or constraints between actions
+  # Set the gallery based on the parameters sent
   def set_gallery
     @gallery = Gallery.find(params[:id])
   end
@@ -72,14 +70,9 @@ class GalleriesController < ApplicationController
     params.require(:gallery).permit(:name, :description)
   end
 
-  # Is the logged-in user the owner of this record?
-  def owner?
-    @gallery.user == current_user
-  end
-
-  # Redirect an action if not performed by the owner
-  def owner_only
-    return if owner?
+  # Redirect an action if the current user is not authorised
+  def authorised_only
+    return if @gallery.authorised?(current_user)
 
     # If they are logged in (but as the wrong user)
     if current_user
@@ -93,7 +86,7 @@ class GalleriesController < ApplicationController
     end
   end
 
-  # Redirect an action if the current use is not logged in
+  # Redirect an action if the current user is not logged in
   def logged_in_only
     return if current_user
 

@@ -203,4 +203,25 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe User, '#authorised?' do
+    let(:user1) { create(:user) }
+    let(:user2) { create(:user) }
+    let(:user3) { create(:user) }
+
+    it 'authorises the owner' do
+      expect(user1.authorised?(user1)).to be true
+      expect(user2.authorised?(user2)).to be true
+      expect(user3.authorised?(user3)).to be true
+    end
+
+    it 'rejects other users' do
+      expect(user1.authorised?(user2)).to be false
+      expect(user1.authorised?(user3)).to be false
+      expect(user2.authorised?(user1)).to be false
+      expect(user2.authorised?(user3)).to be false
+      expect(user3.authorised?(user1)).to be false
+      expect(user3.authorised?(user2)).to be false
+    end
+  end
 end

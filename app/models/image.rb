@@ -12,4 +12,11 @@ class Image < ApplicationRecord
               less_than: 2.megabytes,
               message:   'too large (must be below 2MB)'
             }
+
+  # Is the parameter User approved to perform edits to this record?
+  def authorised?(comparison_user)
+    return false unless comparison_user
+
+    comparison_user.id == gallery.user.id
+  end
 end

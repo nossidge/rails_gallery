@@ -2,7 +2,7 @@
 
 class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit update destroy]
-  before_action :owner_only, only: %i[edit update destroy]
+  before_action :authorised_only, only: %i[edit update destroy]
   before_action :already_logged_in, only: %i[new create]
 
   # GET /users
@@ -11,9 +11,7 @@ class UsersController < ApplicationController
   end
 
   # GET /users/1
-  def show
-    @owner = owner?
-  end
+  def show; end
 
   # GET /users/new
   def new
@@ -53,7 +51,7 @@ class UsersController < ApplicationController
 
   private
 
-  # Use callbacks to share common setup or constraints between actions
+  # Set the user based on the parameters sent
   def set_user
     @user = User.find(params[:id])
   end
@@ -64,14 +62,9 @@ class UsersController < ApplicationController
     params.require(:user).permit(*whitelist)
   end
 
-  # Is the logged-in user the owner of this record?
-  def owner?
-    @user == current_user
-  end
-
-  # Redirect an action if not performed by the owner
-  def owner_only
-    return if owner?
+  # Redirect an action if the current user is not authorised
+  def authorised_only
+    return if @user.authorised?(current_user)
 
     # If they are logged in (but as the wrong user)
     if current_user

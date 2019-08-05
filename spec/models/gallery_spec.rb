@@ -107,4 +107,25 @@ RSpec.describe Gallery, type: :model do
       expect(gallery).not_to be_valid
     end
   end
+
+  describe Gallery, '#authorised?' do
+    let(:gallery1) { create(:gallery) }
+    let(:gallery2) { create(:gallery) }
+    let(:gallery3) { create(:gallery) }
+
+    it 'authorises the owner' do
+      expect(gallery1.authorised?(gallery1.user)).to be true
+      expect(gallery2.authorised?(gallery2.user)).to be true
+      expect(gallery3.authorised?(gallery3.user)).to be true
+    end
+
+    it 'rejects other users' do
+      expect(gallery1.authorised?(gallery2.user)).to be false
+      expect(gallery1.authorised?(gallery3.user)).to be false
+      expect(gallery2.authorised?(gallery1.user)).to be false
+      expect(gallery2.authorised?(gallery3.user)).to be false
+      expect(gallery3.authorised?(gallery1.user)).to be false
+      expect(gallery3.authorised?(gallery2.user)).to be false
+    end
+  end
 end

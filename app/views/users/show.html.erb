@@ -10,7 +10,7 @@
 
     <h1 class="jumbotron-heading"><%= @user.username %></h1>
 
-    <% if @owner %>
+    <% if @user.authorised?(current_user) %>
       <p class="lead text-muted">Email: <strong><%= @user.email %></strong></p>
       <div class="mb-3">
         <%= link_to('Edit my information', edit_user_path(@user), class: 'btn btn-secondary') %>
@@ -24,7 +24,7 @@
     <p class="lead text-muted">
       <%= display_image_and_gallery_count(@user) %>
     </p>
-    <% if @owner %>
+    <% if @user.authorised?(current_user) %>
       <%= link_to('Create new gallery', new_gallery_path, class: 'btn btn-lg btn-primary mt-3') %>
     <% end %>
 
@@ -36,7 +36,7 @@
     <h2 class="jumbotron-heading">Galleries</h2>
 
     <% if @user.galleries.empty? %>
-      <% if @owner %>
+      <% if @user.authorised?(current_user) %>
         <p>You have not yet created any galleries. Why not <a href="<%= new_gallery_path %>">get started</a>?</p>
       <% else %>
         <p><%= @user.username %> has not yet created any galleries.</p>

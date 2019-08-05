@@ -6,7 +6,7 @@
 
     <%= link_to('View gallery', gallery_path(@image.gallery), class: 'btn btn-lg btn-secondary mt-3') %>
 
-    <% if @owner %>
+    <% if @image.authorised?(current_user) %>
       <p class="py-3">
         <%= link_to('Delete image', image_path(@image), method: :delete, class: 'btn btn-danger', data: {confirm: "This will delete the image from the server.\nAre you sure you want to do this?"})%>
       <p>

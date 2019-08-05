@@ -62,4 +62,25 @@ RSpec.describe Image, type: :model do
       )
     end
   end
+
+  describe Image, '#authorised?' do
+    let(:image1) { create(:image) }
+    let(:image2) { create(:image) }
+    let(:image3) { create(:image) }
+
+    it 'authorises the owner' do
+      expect(image1.authorised?(image1.gallery.user)).to be true
+      expect(image2.authorised?(image2.gallery.user)).to be true
+      expect(image3.authorised?(image3.gallery.user)).to be true
+    end
+
+    it 'rejects other users' do
+      expect(image1.authorised?(image2.gallery.user)).to be false
+      expect(image1.authorised?(image3.gallery.user)).to be false
+      expect(image2.authorised?(image1.gallery.user)).to be false
+      expect(image2.authorised?(image3.gallery.user)).to be false
+      expect(image3.authorised?(image1.gallery.user)).to be false
+      expect(image3.authorised?(image2.gallery.user)).to be false
+    end
+  end
 end
