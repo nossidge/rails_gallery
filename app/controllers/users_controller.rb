@@ -13,10 +13,6 @@ class UsersController < ApplicationController
   # GET /users/1
   def show
     @owner = owner?
-    @gallery_count = @user.galleries.count
-    @images_count = @user.galleries.inject(0) do |sum, gallery|
-      sum + gallery.images.count
-    end
   end
 
   # GET /users/new

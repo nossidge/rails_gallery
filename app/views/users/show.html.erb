@@ -22,12 +22,8 @@
       User since: <strong><%= @user.created_at.strftime('%Y-%m-%d') %></strong>
     </p>
     <p class="lead text-muted">
-      User has
-      <strong><%= @images_count %></strong> <%= 'image'.pluralize(@images_count) %>
-      in
-      <strong><%= @gallery_count %></strong> <%= 'gallery'.pluralize(@gallery_count) %>
+      <%= display_image_and_gallery_count(@user) %>
     </p>
-
     <% if @owner %>
       <%= link_to('Create new gallery', new_gallery_path, class: 'btn btn-lg btn-primary mt-3') %>
     <% end %>
