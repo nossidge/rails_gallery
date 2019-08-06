@@ -40,7 +40,7 @@
                 Logged in as:&nbsp;&nbsp;&nbsp;<strong><%= current_user.username %></strong>
               </a>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <a class="dropdown-item" href="<%= user_path(current_user) %>">View My Profile</a>
+                <a class="dropdown-item" href="<%= me_path %>">View My Profile</a>
                 <a class="dropdown-item" href="<%= new_gallery_path %>">Create New Gallery</a>
                 <hr>
                 <%= link_to('Log Out', logout_path, class: 'dropdown-item', data: {confirm: 'Are you sure you want to log out?'})%>

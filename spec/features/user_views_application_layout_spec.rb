@@ -80,7 +80,7 @@ RSpec.describe 'features' do
 
     def they_should_see_user_menu
       expect(page).to have_content(/Logged in as.*#{@user.username}/)
-      expect(page).to have_link('View My Profile', href: user_path(@user))
+      expect(page).to have_link('View My Profile', href: me_path)
       expect(page).to have_link('Create New Gallery', href: new_gallery_path)
       expect(page).to have_link('Log Out', href: logout_path)
     end
