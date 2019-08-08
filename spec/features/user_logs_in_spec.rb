@@ -50,7 +50,7 @@ RSpec.describe 'features' do
 
     ############################################################################
 
-    # The default here is that the informaton is valid.
+    # The default here is that the information is valid.
     # Change the argument if you want the field to be invalid.
     def when_the_user_submits_the_form(
       email:    @user.email,

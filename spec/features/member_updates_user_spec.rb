@@ -157,7 +157,7 @@ RSpec.describe 'features' do
       visit edit_user_path(@original_user)
     end
 
-    # The default here is that the informaton is valid.
+    # The default here is that the information is valid.
     # Change the argument if you want the field to be invalid.
     def when_the_user_submits_the_username_form(
       username: @new_data.username

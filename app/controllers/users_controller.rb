@@ -34,48 +34,29 @@ class UsersController < ApplicationController
   def edit; end
 
   # PATCH/PUT /users/1
+  # We are updating specific fields in this action.
+  # The '#update_attribute' method will update only one field, but it
+  # will not perform any validation at all.
+  # In order to do this, we only need to validate the necessary field, not the
+  # whole object (because most fields will not be passed, they will evaluate
+  # to blank, and that will trip their 'validates uniqueness' validation.)
+  # So we need to perform the field validation ourselves and only save
+  # the value to the database if it passes.
   def update
-    param_hash = params['user'].dup
-    password_confirmation = param_hash.delete('password_confirmation')
+    param_hash = user_params.dup
 
-    # We are updating specific fields in this action.
-    # In order to do this, we only need to validate the necessary field,
-    # not the whole object (because most fields will be blank.)
-    # The '#update_attribute' method will update only one field, but it
-    # will not perform any validation at all.
-    # So we need to perform the field validation ourselves and only save
-    # the value to the database if it passes.
-    if param_hash['username']
-      @user.validate_field(:username, param_hash['username'])
+    # Validate each parameter individually
+    @user.validate_params!(param_hash)
 
-    elsif param_hash['email']
-      @user.validate_field(:email, param_hash['email'])
+    # If there are errors, cancel the update and tell the user
+    return if param_errors(param_hash)
 
-    elsif param_hash['password']
-      @user.validate_field(:password, param_hash['password'])
-
-      # Manually add this simple comparison check.
-      if param_hash['password'] != password_confirmation
-        msg = "doesn't match Password"
-        @user.errors.messages[:password_confirmation] << msg
-      end
-    end
-
-    if @user.errors.any?
-      param_hash.keys.each do |field|
-        flash.now["collapse_toggle_#{field}"] = 'show'
-      end
-      render 'edit'
-      return
-    end
-
-    # rubocop:disable Rails/SkipsModelValidations
-    # All validation has passed, so save to database.
+    # From this point on, all validation has passed
     param_hash.each do |field, value|
-      @user.update_attribute(field, value)
-      flash[:notice] = "#{field.titlecase} updated"
+      update_field!(field, value)
     end
-    # rubocop:enable Rails/SkipsModelValidations
+    fields_list = param_hash.keys.map(&:titlecase).to_sentence
+    flash[:notice] = "#{fields_list} updated"
 
     redirect_to edit_user_path(@user)
   end
@@ -88,6 +69,26 @@ class UsersController < ApplicationController
   end
 
   private
+
+  # If there are errors, cancel the update and tell the user
+  def param_errors(param_hash)
+    return false unless @user.errors.any?
+
+    param_hash.keys.each do |field|
+      flash.now["collapse_toggle_#{field}"] = 'show'
+    end
+    render 'edit'
+    true
+  end
+
+  # Save a value to the user's field.
+  # Note: Make sure all validation has passed first!
+  #
+  # rubocop:disable Rails/SkipsModelValidations
+  def update_field!(field, value)
+    @user.update_attribute(field, value)
+  end
+  # rubocop:enable Rails/SkipsModelValidations
 
   # Set the user based on the parameters sent
   def set_user

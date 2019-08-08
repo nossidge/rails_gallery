@@ -13,7 +13,13 @@ class Image < ApplicationRecord
               message:   'too large (must be below 2MB)'
             }
 
+  ##
   # Is the parameter User approved to perform edits to this record?
+  #
+  # @param comparison_user [User]
+  #   User that is requesting write access to this record.
+  #   This is most likely to be the `current_user`
+  #
   def authorised?(comparison_user)
     return false unless comparison_user
 
