@@ -1,5 +1,81 @@
 <section class="jumbotron text-center">
-  <h1 class="jumbotron-heading">Update information</h1>
-  <%= render 'users/form', submit_text: 'Update my details' %>
-  <%= link_to('Cancel', user_path(@user), class: 'btn btn-secondary mt-3') %>
+  <h1 class="jumbotron-heading">Update User Details</h1>
+  <div class="container" style="max-width: 480px;">
+
+    <% if notice %>
+      <div class="alert alert-primary" role="notice">
+        <%= notice %>
+      </div>
+    <% end %>
+    <%= render 'application/show_errors', error_messages: @user.errors.full_messages %>
+
+    <table class="table mt-4">
+      <tr>
+        <td class="title">Username:</td>
+        <td class="value" id="value-username"><%= @user.changes['username']&.first || @user.username %></td>
+        <td class="full-elem-link">
+          <a class="full-elem-link mt-2" title="Edit username" href="#" data-toggle="collapse" data-target="#edit-username" aria-expanded="false" aria-controls="edit-username"><%= image_tag('pencil-edit-button.svg', height: '22', width: '22') %></a>
+        </td>
+      </tr>
+      <tr class="collapse <%= flash[:collapse_toggle_username] %>" id="edit-username">
+        <td colspan="3">
+          <%= form_for(@user, :html => {id: "edit_username", class: "form-horizontal center"}) do |f| %>
+            <div class="input-group">
+              <%= f.text_field :username, {class: 'form-control', placeholder: 'username'} %>
+              <div class="input-group-append">
+                <%= f.submit('Update', {id: "submit_username", class: 'btn btn-outline-secondary'}) %>
+              </div>
+            </div>
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <td class="title">Email:</td>
+        <td class="value" id="value-email"><%= @user.changes['email']&.first || @user.email %></td>
+        <td class="full-elem-link">
+          <a class="full-elem-link mt-2" title="Edit email" href="#" data-toggle="collapse" data-target="#edit-email" aria-expanded="false" aria-controls="edit-email"><%= image_tag('pencil-edit-button.svg', height: '22', width: '22') %></a>
+        </td>
+      </tr>
+      <tr class="collapse <%= flash[:collapse_toggle_email] %>" id="edit-email">
+        <td colspan="3">
+          <%= form_for(@user, :html => {id: "edit_email", class: "form-horizontal"}) do |f| %>
+            <div class="input-group">
+              <%= f.text_field :email, {class: 'form-control', placeholder: 'email'} %>
+              <div class="input-group-append">
+                <%= f.submit('Update', {id: "submit_email", class: 'btn btn-outline-secondary'}) %>
+              </div>
+            </div>
+          <% end %>
+          <p class="text-muted mt-2 mb-0">
+            This is used as your login ID. Please enter a valid email address, or we will be unable to verify your account.
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td class="title">Password:</td>
+        <td class="value" id="value-password">••••••</td>
+        <td class="full-elem-link">
+          <a class="full-elem-link mt-2" title="Change password" href="#" data-toggle="collapse" data-target="#edit-password" aria-expanded="false" aria-controls="edit-password"><%= image_tag('pencil-edit-button.svg', height: '22', width: '22') %></a>
+        </td>
+      </tr>
+      <tr class="collapse <%= flash[:collapse_toggle_password] %>" id="edit-password">
+        <td colspan="3">
+          <%= form_for(@user, :html => {id: "edit_password", class: "form-horizontal center"}) do |f| %>
+            <div class="input-group">
+              <%= f.password_field :password, {class: 'form-control', placeholder: 'password'} %>
+            </div>
+            <div class="input-group mt-2">
+              <%= f.password_field :password_confirmation, {class: 'form-control', placeholder: 'confirm password'} %>
+              <div class="input-group-append">
+                <%= f.submit('Update', {id: "submit_password", class: 'btn btn-outline-secondary'}) %>
+              </div>
+            </div>
+          <% end %>
+          <p class="text-muted mt-2 mb-0">Password must be at least 6 characters long.</p>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <p><%= link_to('Back to profile page', user_path(@user), class: 'btn btn-lg btn-secondary mt-3') %></p>
+  <p><%= link_to('Delete my account', user_path(@user), method: :delete, class: 'btn btn-danger', data: {confirm: "This will delete your entire account, including all galleries and images.\nAre you sure you want to do this?"})%></p>
 </section>

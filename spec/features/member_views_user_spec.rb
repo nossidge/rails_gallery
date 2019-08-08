@@ -23,7 +23,7 @@ RSpec.describe 'features' do
       they_should_see_the_galleries_for_that_user
       they_should_see_username
       they_should_not_see_user_email
-      they_should_not_see_edit_user_links
+      they_should_not_see_edit_user_link
       they_should_not_see_edit_gallery_links
     end
 
@@ -55,7 +55,7 @@ RSpec.describe 'features' do
       they_should_see_their_galleries
       they_should_see_their_username
       they_should_see_their_email
-      they_should_see_edit_user_links
+      they_should_see_edit_user_link
       they_should_see_edit_gallery_links
       they_should_see_new_gallery_link
     end
@@ -67,18 +67,6 @@ RSpec.describe 'features' do
       given_they_click_the_user_edit_path_for_their_own_account
 
       they_should_be_directed_to_edit_user_page
-    end
-
-    scenario 'member clicks user delete button for their own account' do
-      given_there_is_data_in_the_system
-      given_the_user_is_logged_in
-      given_they_visit_the_user_path_for_their_own_account
-      store_the_user_count
-
-      when_they_click_the_user_delete_path_for_their_own_account
-      they_should_be_shown_a_warning_dialog
-      they_should_be_able_to_cancel_the_operation
-      and_the_user_count_should_not_have_changed
     end
 
     ############################################################################
@@ -138,9 +126,8 @@ RSpec.describe 'features' do
       expect(page).not_to have_content(@other_user.email)
     end
 
-    def they_should_not_see_edit_user_links
+    def they_should_not_see_edit_user_link
       expect(page).not_to have_content('Edit my information')
-      expect(page).not_to have_content('Delete my account')
     end
 
     def they_should_not_see_edit_gallery_links
@@ -198,9 +185,8 @@ RSpec.describe 'features' do
       expect(page).to have_content(@user.email)
     end
 
-    def they_should_see_edit_user_links
+    def they_should_see_edit_user_link
       expect(page).to have_content('Edit my information')
-      expect(page).to have_content('Delete my account')
     end
 
     def they_should_see_edit_gallery_links
@@ -222,25 +208,5 @@ RSpec.describe 'features' do
     def they_should_be_directed_to_edit_user_page
       expect(page).to have_current_path(edit_user_path(@user))
     end
-
-    ############################################################################
-
-    # Don't actually click the link.
-    # We are not using a javascript engine, so we can't see the alert.
-    def when_they_click_the_user_delete_path_for_their_own_account; end
-
-    # We will instead check that the HTML exists that would show the alert.
-    def they_should_be_shown_a_warning_dialog
-      elem = page.find('a', text: 'Delete my account')
-      expect(elem['data-method']).to eq 'delete'
-      expect(elem['data-confirm']).to eq <<~MSG.strip
-        This will delete your entire account, including all galleries and images.
-        Are you sure you want to do this?
-      MSG
-    end
-
-    # See the above comments.
-    # As long as 'data-confirm' exists, it should be valid.
-    def they_should_be_able_to_cancel_the_operation; end
   end
 end

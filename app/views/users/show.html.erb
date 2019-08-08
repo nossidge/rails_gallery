@@ -14,7 +14,6 @@
       <p class="lead text-muted">Email: <strong><%= @user.email %></strong></p>
       <div class="mb-3">
         <%= link_to('Edit my information', edit_user_path(@user), class: 'btn btn-secondary') %>
-        <%= link_to('Delete my account', user_path(@user), method: :delete, class: 'btn btn-danger', data: {confirm: "This will delete your entire account, including all galleries and images.\nAre you sure you want to do this?"})%>
       </div>
     <% end %>
 

@@ -38,6 +38,7 @@ class ImagesController < ApplicationController
   # DELETE /images/1
   def destroy
     gallery = @image.gallery
+    @image.file.purge
     @image.destroy
 
     redirect_to gallery_path(gallery)

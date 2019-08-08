@@ -35,11 +35,49 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
-    if @user.update(user_params)
-      redirect_to @user
-    else
-      render 'edit'
+    param_hash = params['user'].dup
+    password_confirmation = param_hash.delete('password_confirmation')
+
+    # We are updating specific fields in this action.
+    # In order to do this, we only need to validate the necessary field,
+    # not the whole object (because most fields will be blank.)
+    # The '#update_attribute' method will update only one field, but it
+    # will not perform any validation at all.
+    # So we need to perform the field validation ourselves and only save
+    # the value to the database if it passes.
+    if param_hash['username']
+      @user.validate_field(:username, param_hash['username'])
+
+    elsif param_hash['email']
+      @user.validate_field(:email, param_hash['email'])
+
+    elsif param_hash['password']
+      @user.validate_field(:password, param_hash['password'])
+
+      # Manually add this simple comparison check.
+      if param_hash['password'] != password_confirmation
+        msg = "doesn't match Password"
+        @user.errors.messages[:password_confirmation] << msg
+      end
     end
+
+    if @user.errors.any?
+      param_hash.keys.each do |field|
+        flash.now["collapse_toggle_#{field}"] = 'show'
+      end
+      render 'edit'
+      return
+    end
+
+    # rubocop:disable Rails/SkipsModelValidations
+    # All validation has passed, so save to database.
+    param_hash.each do |field, value|
+      @user.update_attribute(field, value)
+      flash[:notice] = "#{field.titlecase} updated"
+    end
+    # rubocop:enable Rails/SkipsModelValidations
+
+    redirect_to edit_user_path(@user)
   end
 
   # DELETE /users/1

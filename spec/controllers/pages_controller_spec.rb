@@ -13,7 +13,7 @@ RSpec.describe PagesController, type: :controller do
       given_they_visit_the_me_path
 
       they_should_see_their_own_data
-      they_should_see_edit_user_links
+      they_should_see_edit_user_link
       they_should_see_the_me_path_as_url
     end
 
@@ -47,9 +47,8 @@ RSpec.describe PagesController, type: :controller do
       expect(page).to have_content(@user.email)
     end
 
-    def they_should_see_edit_user_links
+    def they_should_see_edit_user_link
       expect(page).to have_content('Edit my information')
-      expect(page).to have_content('Delete my account')
     end
 
     def they_should_see_the_me_path_as_url
