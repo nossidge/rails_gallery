@@ -14,3 +14,6 @@
 //= require activestorage
 //= require turbolinks
 //= require_tree .
+//
+// Vendor Files
+//= require html5sortable.min

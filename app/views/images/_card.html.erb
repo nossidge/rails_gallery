@@ -7,7 +7,7 @@ This should be a thumbnail.
   The image to be displayed
 
 %>
-<div class="col-md-3">
+<div class="image_card col-md-3" data-id="<%= image.id %>" data-position="<%= image.position %>">
   <div class="card mb-3 shadow-sm">
     <a href="<%= image_path(image) %>">
       <%= display_thumbnail(image) %>

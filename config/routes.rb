@@ -5,8 +5,14 @@ Rails.application.routes.draw do
   root 'galleries#index', as: 'home'
 
   resources :users
+
   resources :galleries
-  resources :images, except: [:edit, :update]
+
+  resources :images, except: [:edit, :update] do
+    collection do
+      patch :sort
+    end
+  end
 
   resources :sessions, only: [:new, :create, :destroy]
   get 'signup', to: 'users#new', as: 'signup'

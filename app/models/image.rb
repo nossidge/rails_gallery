@@ -3,6 +3,9 @@
 class Image < ApplicationRecord
   belongs_to :gallery
 
+  acts_as_list scope: :gallery
+  default_scope { order(position: :asc) }
+
   has_one_attached :file
 
   validates :file,

@@ -52,8 +52,11 @@
 
 <div class="album py-5 bg-light">
   <div class="container">
+    <p class="lead text-muted text-right">
+      Drag and drop images to change their order
+    </p>
 
-    <div class="row">
+    <div class="row" id="sort_images" data-url="<%= sort_images_path %>">
       <% @gallery.images.each do |image| %>
         <%# This feels a bit hacky... %>
         <% next unless image.created_at? %>
@@ -64,13 +67,3 @@
 
   </div>
 </div>
-
-<script>
-  // TODO: Move this
-  // Update the label of the file input with the filename
-  $('#image_file').on('change', function(){
-    var fileName = $(this).val();
-    var baseName = fileName.split(/[\\/]/).pop();
-    $(this).next('.custom-file-label').html(baseName);
-  })
-</script>
