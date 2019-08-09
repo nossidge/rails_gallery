@@ -1,3 +1,51 @@
+<div class="album py-4 bg-light">
+
+  <div class="text-center mb-3">
+    <% if @image.first? %>
+      <a type="button" class="btn btn-secondary btn_image_nav disabled">
+        <%= octicon('chevron-left') %><%= octicon('chevron-left') %>
+      </a>
+      <a type="button" class="btn btn-secondary btn_image_nav disabled">
+        <%= octicon('chevron-left') %>
+      </a>
+    <% else %>
+      <a type="button" class="btn btn-secondary btn_image_nav" title="First image" href="<%= image_path(@image.gallery.images.first) %>">
+        <%= octicon('chevron-left') %><%= octicon('chevron-left') %>
+      </a>
+      <a type="button" class="btn btn-secondary btn_image_nav" title="Previous image" href="<%= image_path(@image.higher_item) %>">
+        <%= octicon('chevron-left') %>
+      </a>
+    <% end %>
+
+    <a type="button" title="View gallery" class="btn btn-secondary btn_image_nav btn_image_nav_back text-light" href="<%= gallery_path(@image.gallery) %>">
+      <%= image_tag('photo-gallery.svg', height: '30px') %>
+    </a>
+
+    <% if @image.last? %>
+      <a type="button" class="btn btn-secondary btn_image_nav disabled">
+        <%= octicon('chevron-right') %>
+      </a>
+      <a type="button" class="btn btn-secondary btn_image_nav disabled">
+        <%= octicon('chevron-right') %><%= octicon('chevron-right') %>
+      </a>
+    <% else %>
+      <a type="button" class="btn btn-secondary btn_image_nav" title="Next image" href="<%= image_path(@image.lower_item) %>">
+        <%= octicon('chevron-right') %>
+      </a>
+      <a type="button" class="btn btn-secondary btn_image_nav" title="Last image" href="<%= image_path(@image.gallery.images.last) %>">
+        <%= octicon('chevron-right') %><%= octicon('chevron-right') %>
+      </a>
+    <% end %>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <% if @image.file.attached? && @image.file.attachment.blob.present? && @image.file.attachment.blob.persisted? %>
+        <img class="mx-auto d-block img-thumbnail" src="<%= url_for(@image.file) %>">
+      <% end %>
+    </div>
+  </div>
+</div>
 <section class="jumbotron text-center">
   <div class="container">
     <h1 class="jumbotron-heading"><%= @image.gallery.name %></h1>
@@ -14,12 +62,3 @@
 
   </div>
 </section>
-<div class="album py-5 bg-light">
-  <div class="container">
-    <div class="row">
-      <% if @image.file.attached? && @image.file.attachment.blob.present? && @image.file.attachment.blob.persisted? %>
-        <img src="<%= url_for(@image.file) %>" style="display:block;margin-left:auto;margin-right:auto;">
-      <% end %>
-    </div>
-  </div>
-</div>

@@ -14,7 +14,7 @@
         <td class="title">Username:</td>
         <td class="value" id="value-username"><%= @user.changes['username']&.first || @user.username %></td>
         <td class="full-elem-link">
-          <a class="full-elem-link mt-2" title="Edit username" href="#" data-toggle="collapse" data-target="#edit-username" aria-expanded="false" aria-controls="edit-username"><%= image_tag('pencil-edit-button.svg', height: '22', width: '22') %></a>
+          <a class="full-elem-link mt-2" title="Edit username" href="#" data-toggle="collapse" data-target="#edit-username" aria-expanded="false" aria-controls="edit-username"><%= octicon('pencil', height: '22', width: '22') %></a>
         </td>
       </tr>
       <tr class="collapse <%= flash[:collapse_toggle_username] %>" id="edit-username">
@@ -33,7 +33,7 @@
         <td class="title">Email:</td>
         <td class="value" id="value-email"><%= @user.changes['email']&.first || @user.email %></td>
         <td class="full-elem-link">
-          <a class="full-elem-link mt-2" title="Edit email" href="#" data-toggle="collapse" data-target="#edit-email" aria-expanded="false" aria-controls="edit-email"><%= image_tag('pencil-edit-button.svg', height: '22', width: '22') %></a>
+          <a class="full-elem-link mt-2" title="Edit email" href="#" data-toggle="collapse" data-target="#edit-email" aria-expanded="false" aria-controls="edit-email"><%= octicon('pencil', height: '22', width: '22') %></a>
         </td>
       </tr>
       <tr class="collapse <%= flash[:collapse_toggle_email] %>" id="edit-email">
@@ -55,7 +55,7 @@
         <td class="title">Password:</td>
         <td class="value" id="value-password">••••••</td>
         <td class="full-elem-link">
-          <a class="full-elem-link mt-2" title="Change password" href="#" data-toggle="collapse" data-target="#edit-password" aria-expanded="false" aria-controls="edit-password"><%= image_tag('pencil-edit-button.svg', height: '22', width: '22') %></a>
+          <a class="full-elem-link mt-2" title="Change password" href="#" data-toggle="collapse" data-target="#edit-password" aria-expanded="false" aria-controls="edit-password"><%= octicon('pencil', height: '22', width: '22') %></a>
         </td>
       </tr>
       <tr class="collapse <%= flash[:collapse_toggle_password] %>" id="edit-password">

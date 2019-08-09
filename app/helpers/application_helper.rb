@@ -27,4 +27,21 @@ module ApplicationHelper
       render partial: 'images/default_svg'
     end
   end
+
+  ##
+  # Return an SVG HTML element containing the requested octicon.
+  # This method is based on the implementation described here:
+  # https://styleguide.github.com/primer/components/octicons/
+  #
+  # @param [String] icon_name
+  #   The name of the icon to display.
+  #   Full list is available here: https://octicons.github.com/
+  # @param [Hash<Symbol, String>] svg_attributes
+  #   Attributes to add to the SVG element
+  # @return [String]
+  #   An HTML string containing the SVG element.
+  #
+  def octicon(icon_name, svg_attributes = {})
+    Octicons::Octicon.new(icon_name, svg_attributes).to_svg.html_safe
+  end
 end

@@ -107,6 +107,8 @@ GEM
     nio4r (2.4.0)
     nokogiri (1.10.3-x64-mingw32)
       mini_portile2 (~> 2.4.0)
+    octicons (9.1.1)
+      nokogiri (>= 1.6.3.1)
     public_suffix (3.1.1)
     puma (3.12.1)
     rack (2.0.7)
@@ -222,6 +224,7 @@ DEPENDENCIES
   factory_bot_rails
   jbuilder (~> 2.5)
   mini_magick (~> 4.8)
+  octicons
   puma (~> 3.11)
   rails (~> 5.2.3)
   rspec-rails (~> 3.8)
