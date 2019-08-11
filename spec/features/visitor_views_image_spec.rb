@@ -20,9 +20,6 @@ RSpec.describe 'features' do
       given_the_user_is_not_logged_in
       given_they_visit_a_specific_image
 
-      they_should_see_the_name_of_the_gallery
-      they_should_see_the_username_of_the_gallery_owner
-      they_should_see_a_link_to_the_gallery_owner
       they_should_see_a_link_back_to_the_gallery
       they_should_not_see_delete_image_link
     end
@@ -71,18 +68,6 @@ RSpec.describe 'features' do
 
     def given_they_visit_a_specific_image
       visit image_path(@image)
-    end
-
-    def they_should_see_the_name_of_the_gallery
-      expect(page).to have_content(@gallery.name)
-    end
-
-    def they_should_see_the_username_of_the_gallery_owner
-      expect(page).to have_content(@gallery.user.username)
-    end
-
-    def they_should_see_a_link_to_the_gallery_owner
-      expect(page).to have_link('', href: user_path(@gallery.user))
     end
 
     def they_should_see_a_link_back_to_the_gallery

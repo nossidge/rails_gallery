@@ -6,7 +6,27 @@
   width: 90px;
   padding: 12px;
 }
-
 .btn_image_nav_back {
   width: 180px;
+}
+#image_full {
+  position: relative;
+}
+#image_controls, #image_controls_tools {
+  position: absolute;
+  z-index: -1;
+  padding: 0;
+  right: 10px;
+}
+#image_controls {
+  top: 10px;
+}
+#image_controls_tools {
+  top: 58px;
+}
+#image_full:hover > #image_controls, #image_full:hover > #image_controls_tools {
+  z-index: 1;
+}
+#image_full a {
+  width: 60px;
 }

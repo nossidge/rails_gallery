@@ -1,5 +1,4 @@
 <div class="album py-4 bg-light">
-
   <div class="text-center mb-3">
     <% if @image.first? %>
       <a type="button" class="btn btn-secondary btn_image_nav disabled">
@@ -9,15 +8,15 @@
         <%= octicon('chevron-left') %>
       </a>
     <% else %>
-      <a type="button" class="btn btn-secondary btn_image_nav" title="First image" href="<%= image_path(@image.gallery.images.first) %>">
+      <a title="First image" type="button" class="btn btn-secondary btn_image_nav" href="<%= image_path(@image.gallery.images.first) %>">
         <%= octicon('chevron-left') %><%= octicon('chevron-left') %>
       </a>
-      <a type="button" class="btn btn-secondary btn_image_nav" title="Previous image" href="<%= image_path(@image.higher_item) %>">
+      <a title="Previous image" type="button" class="btn btn-secondary btn_image_nav" href="<%= image_path(@image.higher_item) %>">
         <%= octicon('chevron-left') %>
       </a>
     <% end %>
 
-    <a type="button" title="View gallery" class="btn btn-secondary btn_image_nav btn_image_nav_back text-light" href="<%= gallery_path(@image.gallery) %>">
+    <a title="View gallery" type="button" class="btn btn-secondary btn_image_nav btn_image_nav_back text-light" href="<%= gallery_path(@image.gallery) %>">
       <%= image_tag('photo-gallery.svg', height: '30px') %>
     </a>
 
@@ -29,10 +28,10 @@
         <%= octicon('chevron-right') %><%= octicon('chevron-right') %>
       </a>
     <% else %>
-      <a type="button" class="btn btn-secondary btn_image_nav" title="Next image" href="<%= image_path(@image.lower_item) %>">
+      <a title="Next image" type="button" class="btn btn-secondary btn_image_nav" href="<%= image_path(@image.lower_item) %>">
         <%= octicon('chevron-right') %>
       </a>
-      <a type="button" class="btn btn-secondary btn_image_nav" title="Last image" href="<%= image_path(@image.gallery.images.last) %>">
+      <a title="Last image" type="button" class="btn btn-secondary btn_image_nav" href="<%= image_path(@image.gallery.images.last) %>">
         <%= octicon('chevron-right') %><%= octicon('chevron-right') %>
       </a>
     <% end %>
@@ -41,24 +40,28 @@
   <div class="container">
     <div class="row">
       <% if @image.file.attached? && @image.file.attachment.blob.present? && @image.file.attachment.blob.persisted? %>
-        <img class="mx-auto d-block img-thumbnail" src="<%= url_for(@image.file) %>">
+        <div id="image_full" class="mx-auto d-block img-thumbnail">
+          <img title="User: <%= @image.gallery.user.username %>&#013;Added: <%= @image.created_at.strftime('%Y-%m-%d') %>&#013;Updated: <%= @image.updated_at.strftime('%Y-%m-%d') %>" src="<%= url_for(@image.file) %>">
+          <div id="image_controls">
+            <a title="TODO: Full screen" type="button" class="btn btn-secondary mb-1"><%= octicon('screen-full') %></a>
+            <a title="Open in new tab" type="button" class="btn btn-secondary mb-1" href="<%= url_for(@image.file) %>" target="_blank"><%= octicon('link-external') %></a>
+
+            <% if @image.authorised?(current_user) %>
+              <a title="Edit tools" type="button" class="btn btn-secondary mb-1" data-toggle="collapse" data-target="#image_controls_tools"><%= octicon('tools') %></a>
+            <% end %>
+
+          </div>
+
+          <% if @image.authorised?(current_user) %>
+            <div id="image_controls_tools" class="text-right collapse">
+              <a title="Delete image" type="button" class="btn btn-secondary mb-1" data-confirm="This will delete the image from the server. Are you sure you want to do this?" rel="nofollow" data-method="delete" href="<%= image_path(@image) %>"><%= octicon('trashcan') %></a>
+              <br>
+              <a title="TODO: Crop image" type="button" class="btn btn-secondary mb-1"><%= octicon('gear') %></a>
+            </div>
+          <% end %>
+
+        </div>
       <% end %>
     </div>
   </div>
 </div>
-<section class="jumbotron text-center">
-  <div class="container">
-    <h1 class="jumbotron-heading"><%= @image.gallery.name %></h1>
-    <p class="lead text-muted">image added <strong><%= @image.created_at.strftime('%Y-%m-%d') %></strong></p>
-    <p class="lead text-muted">by <%= link_to(@image.gallery.user.username, user_path(@image.gallery.user))%></p>
-
-    <%= link_to('View gallery', gallery_path(@image.gallery), class: 'btn btn-lg btn-secondary mt-3') %>
-
-    <% if @image.authorised?(current_user) %>
-      <p class="py-3">
-        <%= link_to('Delete image', image_path(@image), method: :delete, class: 'btn btn-danger', data: {confirm: "This will delete the image from the server.\nAre you sure you want to do this?"})%>
-      <p>
-    <% end %>
-
-  </div>
-</section>

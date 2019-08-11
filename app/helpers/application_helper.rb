@@ -41,7 +41,9 @@ module ApplicationHelper
   # @return [String]
   #   An HTML string containing the SVG element.
   #
+  # rubocop:disable Rails/OutputSafety
   def octicon(icon_name, svg_attributes = {})
     Octicons::Octicon.new(icon_name, svg_attributes).to_svg.html_safe
   end
+  # rubocop:enable Rails/OutputSafety
 end

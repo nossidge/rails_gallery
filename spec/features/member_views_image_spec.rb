@@ -21,8 +21,6 @@ RSpec.describe 'features' do
       given_they_visit_an_image_path_for_another_user
 
       they_should_see_the_full_image
-      they_should_see_the_image_owners_username
-      they_should_see_a_link_to_the_image_owner
       they_should_see_a_link_to_the_parent_gallery
       they_should_not_see_a_link_to_delete_image
     end
@@ -52,8 +50,6 @@ RSpec.describe 'features' do
       given_they_visit_the_path_to_an_image_they_own
 
       they_should_see_the_full_image
-      they_should_see_the_image_owners_username
-      they_should_see_a_link_to_the_image_owner
       they_should_see_a_link_to_the_parent_gallery
       they_should_see_the_delete_image_link
     end
@@ -136,15 +132,6 @@ RSpec.describe 'features' do
       expect(page).to have_xpath("//img[@src='#{image_url}']")
     end
 
-    def they_should_see_the_image_owners_username
-      expect(page).to have_content(@current_image.gallery.user.username)
-    end
-
-    def they_should_see_a_link_to_the_image_owner
-      link = user_path(@current_image.gallery.user)
-      expect(page).to have_link('', href: link)
-    end
-
     def they_should_see_a_link_to_the_parent_gallery
       link = gallery_path(@current_image.gallery)
       expect(page).to have_link('', href: link)
@@ -220,9 +207,9 @@ RSpec.describe 'features' do
 
     # We will instead check that the HTML exists that would show the alert.
     def they_should_be_shown_a_warning_dialog
-      elem = page.find('a', text: 'Delete image')
+      elem = page.find(:xpath, "//a[@title='Delete image']")
       expect(elem['data-method']).to eq 'delete'
-      expect(elem['data-confirm']).to eq <<~MSG.strip
+      expect(elem['data-confirm']).to eq <<~MSG.strip.sub("\n", ' ')
         This will delete the image from the server.
         Are you sure you want to do this?
       MSG
